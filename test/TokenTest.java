@@ -31,9 +31,14 @@ public class TokenTest {
 	}
 
 	@Test
-	@Ignore
 	public void testSetCtag() {
-		fail("Not yet implemented");
+		String [] text = {"Trier_NN_0_BN", "ist_VFIN_1_BN"};
+		Token tok1 = new Token(text[0]);
+		tok1.setCtag("BN");
+		equals ("BN"==tok1.getCtag());
+		Token tok2 = new Token(text[1]);
+		tok2.setCtag("BV");
+		equals ("BV"==tok2.getCtag());
 	}
 
 	@Test
@@ -49,27 +54,27 @@ public class TokenTest {
 	public void testGetTag() {
 		String [] text = {"Trier_NN_0_BN", "ist_VFIN_1_BN"};
 		Token tok1 = new Token(text[0]);
-		equals ("NN"==tok1.getToken());
+		equals ("NN"==tok1.getTag());
 		Token tok2 = new Token(text[1]);
-		equals ("VFIN"==tok2.getToken());
+		equals ("VFIN"==tok2.getTag());
 	}
 
 	@Test
 	public void testGetId() {
 		String [] text = {"Trier_NN_0_BN", "ist_VFIN_1_BN"};
 		Token tok1 = new Token(text[0]);
-		equals ("0"==tok1.getToken());
+		equals ("0"==tok1.getId());
 		Token tok2 = new Token(text[1]);
-		equals ("1"==tok2.getToken());
+		equals ("1"==tok2.getId());
 	}
 
 	@Test
 	public void testGetCtag() {
 		String [] text = {"Trier_NN_0_BN", "ist_VFIN_1_BN"};
 		Token tok1 = new Token(text[0]);
-		equals ("BN"==tok1.getToken());
+		equals ("BN"==tok1.getCtag());
 		Token tok2 = new Token(text[1]);
-		equals ("BN"==tok2.getToken());
+		equals ("BN"==tok2.getCtag());
 	}
 
 }
