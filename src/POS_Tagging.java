@@ -1,8 +1,8 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -15,29 +15,40 @@ public class POS_Tagging {
 	ClassNotFoundException {
 
 		// Initialize the tagger
-		MaxentTagger tagger = new MaxentTagger("taggers/german-hgc.tagger");
+		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");
 
-		// Input of a test file
-		String input = new String(Files.readAllBytes(Paths.get("input.txt")));
+		File folder = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/justTexts");
 
-		// The tagged string
-		String tagged = tagger.tagString(input);
-		
-		String [] split_tagged = tagged.split(" ");
+		File[] listOfFiles = folder.listFiles();
 
-		// Output the result
-		PrintWriter pWriter = null;
-		try {
-			pWriter = new PrintWriter(new BufferedWriter(new FileWriter("tagged.txt")));
-			for (int i=0;i<split_tagged.length;i++){
-				pWriter.println(split_tagged[i]+"_"+i+"_BN");
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} finally {
-			if (pWriter != null){
-				pWriter.flush();
-				pWriter.close();
+		for (int i = 0; i < listOfFiles.length; i++) {
+
+			if (listOfFiles[i].isFile()) {
+
+				// Input of a test file
+				String input = new String(Files.readAllBytes(Paths.get("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/justTexts/"+listOfFiles[i].getName())), "UTF-8");
+
+				// The tagged string
+				String tagged = tagger.tagString(input);
+
+				String [] split_tagged = tagged.split(" ");
+
+				// Output the result
+				PrintWriter pWriter = null;
+				try {
+					pWriter = new PrintWriter(new BufferedWriter(new FileWriter("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/corporaStandford/"+listOfFiles[i].getName())));
+					for (int j=0;j<split_tagged.length;j++){
+						pWriter.println(split_tagged[j]+"_"+j+"_BN");
+					}
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				} finally {
+					if (pWriter != null){
+						pWriter.flush();
+						pWriter.close();
+					}
+				}
+				System.out.println("Writining File # "+i);
 			}
 		}
 	}
