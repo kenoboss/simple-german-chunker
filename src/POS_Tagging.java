@@ -13,6 +13,8 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 public class POS_Tagging {
 	public static void main(String[] args) throws IOException,
 	ClassNotFoundException {
+		
+		final long timeStart = System.currentTimeMillis();
 
 		// Initialize the tagger
 		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");
@@ -48,8 +50,15 @@ public class POS_Tagging {
 						pWriter.close();
 					}
 				}
-				System.out.println("Writining File # "+i);
+				
+				
 			}
+			final long timeEnd = System.currentTimeMillis(); 
+			final long time = (timeEnd - timeStart)/1000;
+			System.out.println("Writining File # "+i+" Time: " + time + " Sek."); 
 		}
+		final long timeEnd = System.currentTimeMillis(); 
+		final long time = (timeEnd - timeStart)/1000;
+		System.out.println("Dauer des Programms: " + time + " Sek."); 
 	}
 }
