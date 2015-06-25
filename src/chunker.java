@@ -16,6 +16,7 @@ public class chunker {
 
 		String [] corpus_chunked = new String [1574818];
 		String [] corpus_tagged = new String [1574818];
+		String [] postag = new String[50];
 
 		try {
 			// Reading the diffrent corpora
@@ -42,6 +43,18 @@ public class chunker {
 				indextc++;
 			}
 			intc.close();
+			
+			
+			// Creating an array for POS Tag
+			File tagPos = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/tagPos.txt");
+			BufferedReader inpt  = new BufferedReader(new InputStreamReader(new FileInputStream (tagPos), "UTF8"));			
+
+			int indexpt = 0;
+			while (( line = inpt.readLine()) != null) {
+				postag[indexpt] = line;
+				indexpt++;
+			}
+			inpt.close();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();  
@@ -51,7 +64,7 @@ public class chunker {
 
 
 		String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
-		String [] postag = {"ADJA", "ADV", "APPR", "ART", "CARD", "NN", "NE", "PPER", "VVFIN", "VVIMP"};
+		//String [] postag = {"ADJA", "ADV", "APPR", "ART", "CARD", "NN", "NE", "PPER", "VVFIN", "VVIMP"};
 		String [] rules = new String [ctags.length*postag.length];
 
 		// Creating the first rules
@@ -60,10 +73,12 @@ public class chunker {
 		try{
 			printWriter = new PrintWriter(file);
 
-
+			int l = 0;
 			for (int j = 0; j < postag.length; j++){
 				for (int k = 0; k < ctags.length; k++){
 					printWriter.println("[POS, 0="+postag[j]+"] = "+ctags[k]);
+					rules[l]="[POS, 0="+postag[j]+"] = "+ctags[k];
+					l++;
 				}
 			}
 		}catch (FileNotFoundException e){
@@ -80,6 +95,10 @@ public class chunker {
 		//				Token tok = new Token (corpus_tagged[i]);
 		//				System.out.println(tok.getTag());
 		//			}
+		
+		for (int i=0; i<rules.length;i++){
+			System.out.println(i+" "+rules[i]);
+		}
 
 
 
