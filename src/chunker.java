@@ -6,14 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-// Test for git
+
 
 public class chunker {
 
 	public static void main(String[] args) {
-		
+
 		final long timeStart = System.currentTimeMillis();
-		
+
 		String [] corpus_chunked = new String [1574818];
 		String [] corpus_tagged = new String [1574818];
 
@@ -32,17 +32,17 @@ public class chunker {
 			incc.close();
 
 			// Creating an array for the tagged corpus (POS-Tag)
-			
+
 			File tagged_corpus = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/tagged_corpus.txt");
 			BufferedReader intc  = new BufferedReader(new InputStreamReader(new FileInputStream (tagged_corpus), "UTF8"));
-			
+
 			int indextc = 0;
 			while (( line = intc.readLine()) != null) {
 				corpus_tagged[indextc] = line;
 				indextc++;
 			}
 			intc.close();
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();  
 		} catch (IOException e) {
@@ -50,24 +50,39 @@ public class chunker {
 		}
 
 
-			String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
-			String [] postag = {"ADJA", "ADV", "APPR", "ART", "CARD", "NN", "NE", "PPER", "VVFIN", "VVIMP"};
-			String [] rules = new String [ctags.length*postag.length];
+		String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
+		String [] postag = {"ADJA", "ADV", "APPR", "ART", "CARD", "NN", "NE", "PPER", "VVFIN", "VVIMP"};
+		String [] rules = new String [ctags.length*postag.length];
 
-			// Creating the first rules
+		// Creating the first rules
+		File file = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/rules.txt");
+		PrintWriter printWriter = null;
+		try{
+			printWriter = new PrintWriter(file);
+
+
 			for (int j = 0; j < postag.length; j++){
 				for (int k = 0; k < ctags.length; k++){
-					for (int l = 0; l < rules.length; l++){
-						rules[l] = "[POS, 0="+postag[j]+"] = "+ctags[k];
-					}
+					printWriter.println("[POS, 0="+postag[j]+"] = "+ctags[k]);
 				}
 			}
-			
-			for (int i= 0; i<corpus_tagged.length; i++){
-				Token tok = new Token (corpus_tagged[i]);
-				System.out.println(tok.getTag());
+		}catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
+		finally{
+			if ( printWriter != null ) {
+				printWriter.close();
 			}
-			
+		}
+
+
+		//			for (int i= 0; i<corpus_tagged.length; i++){
+		//				Token tok = new Token (corpus_tagged[i]);
+		//				System.out.println(tok.getTag());
+		//			}
+
+
+
 
 		final long timeEnd = System.currentTimeMillis(); 
 		final long time = (timeEnd - timeStart)/1000;
