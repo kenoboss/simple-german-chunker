@@ -37,7 +37,7 @@ public class first_frame extends JFrame {
 	public first_frame() {
 		setTitle("Simple German Chunker");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 550);
+		setBounds(100, 100, 600, 550);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);

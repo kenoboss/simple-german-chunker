@@ -76,8 +76,8 @@ public class chunker {
 			int l = 0;
 			for (int j = 0; j < postag.length; j++){
 				for (int k = 0; k < ctags.length; k++){
-					printWriter.println("[POS, 0="+postag[j]+"] = "+ctags[k]);
-					rules[l]="[POS, 0="+postag[j]+"] = "+ctags[k];
+					printWriter.println("[POS.0="+postag[j]+"] = '"+ctags[k]+"'");
+					rules[l]="[POS.0="+postag[j]+"] = '"+ctags[k]+"'";
 					l++;
 				}
 			}
@@ -96,9 +96,7 @@ public class chunker {
 		//				System.out.println(tok.getTag());
 		//			}
 		
-		for (int i=0; i<rules.length;i++){
-			System.out.println(i+" "+rules[i]);
-		}
+		
 
 
 
