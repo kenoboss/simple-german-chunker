@@ -95,8 +95,8 @@ public class chunker {
 		//		System.out.println(regel.getPosition()[0]);7
 
 
-		int [] freq = new int [rules.length];
-		int [] succ = new int [rules.length];
+		float [] freq = new float [rules.length];
+		float [] succ = new float [rules.length];
 		for (int n = 0; n < rules.length; n++){
 			freq[n] = 0;
 			succ[n] = 0;
@@ -148,8 +148,15 @@ public class chunker {
 		PrintWriter printWriter3 = null;
 		try{
 			printWriter3 = new PrintWriter(auswertung);
+			
 			for (int o = 0; o<rules.length;o++){
-				printWriter3.println("Regel: "+rules[o]+"Freq:"+freq[o]+" Succ:"+succ[o]);
+				if (freq[o]>0){
+					printWriter3.println(rules[o]+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+succ[o]/freq[o]);
+				}
+				else{
+					printWriter3.println(rules[o]+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
+				}
+				
 			}
 
 		}catch (FileNotFoundException e){
