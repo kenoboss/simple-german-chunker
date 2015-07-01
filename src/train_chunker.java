@@ -176,10 +176,10 @@ public class train_chunker {
 			printWriter3 = new PrintWriter(auswertung);
 			for (int o = 0; o<rules.size();o++){
 				if (freq[o]>0){
-					printWriter.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+(succ[o]/freq[o])*100);
+					printWriter3.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+(succ[o]/freq[o])*100);
 				}
 				else{
-					printWriter.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
+					printWriter3.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
 				}
 			}
 		}catch (FileNotFoundException e){
@@ -213,6 +213,7 @@ public class train_chunker {
 
 		final long timeEnd = System.currentTimeMillis(); 
 		final long time = (timeEnd - timeStart)/1000;
+		System.out.println("_________________________________________");
 		System.out.println("Dauer des Programms: " + time + " Sek."); 
 	}
 }
