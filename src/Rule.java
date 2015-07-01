@@ -9,7 +9,7 @@ public class Rule {
 	public Rule(String text) {
 		String [] rule = text.split("=>");
 		this.chunktag = rule[1];
-		String [] eval = rule[2].split("Acc:");
+		String [] eval = rule[2].split("Acc: ");
 		this.accuracy = eval[1];
 		
 		if (rule[0].matches(",")){
@@ -29,7 +29,7 @@ public class Rule {
 		
 
 	}
-	//[POS.0=ADJD]=B-NC 
+
 
 	public void setPosition(String token) {
 		this.position = position;
