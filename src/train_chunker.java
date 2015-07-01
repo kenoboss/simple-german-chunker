@@ -30,13 +30,13 @@ public class train_chunker {
 
 		try {
 			// Pfadangaben für verschiedene Dateien 
-			File chunked_corpus = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/chunked_corpus.txt");
-			File tagged_corpus = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus//tagged_corpus.txt");
-			File tagPos = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/tagPos.txt");
+			File chunked_corpus = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/trainRessources/chunked_corpus.txt");
+			File tagged_corpus = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/trainRessources//tagged_corpus.txt");
+			File tagPos = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/trainRessources/tagPos.txt");
 			
-			File ruleFiles = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/rules.txt");
-			File anwendung = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/anwendung.txt");
-			File auswertung = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/newCorporus/regel_auswertung.txt");
+			File ruleFiles = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/rulesAndEval/rules.txt");
+			File anwendung = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/rulesAndEval/anwendung.txt");
+			File auswertung = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/rulesAndEval/regel_auswertung.txt");
 
 			// Einlesen des Chunk getaggten Corpus
 			BufferedReader incc  = new BufferedReader(new InputStreamReader(new FileInputStream (chunked_corpus), "UTF8"));			
@@ -85,13 +85,11 @@ public class train_chunker {
 				int l = 0;
 				for (int j = 0; j < postag.size(); j++){
 					for (int k = 0; k < ctags.size(); k++){
-						printWriter.println("0="+postag.get(j)+"=>"+ctags.get(k)+"=> Freq: "+0.0+" Succ: "+0.0+" Acc: "+100.0);
-						rules.add("0="+postag.get(j)+"=>"+ctags.get(k)+"=> Freq: "+0.0+" Succ: "+0.0+" Acc: "+100.0);
+						printWriter.println("0="+postag.get(j)+"=>"+ctags.get(k));
+						rules.add("0="+postag.get(j)+"=>"+ctags.get(k));
 						l++;
 					}
 				}
-				//rules[o]+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+(succ[o]/freq[o])*100)
-
 
 				float [] freq = new float [rules.size()];
 				float [] succ = new float [rules.size()];
@@ -101,8 +99,6 @@ public class train_chunker {
 				}
 
 				// Erster Durchlauf der erzeugten Regeln rules[] auf das POS getaggte Corpus
-				// PROBLEM: Erzeugt eine mehr als 10GB große Datei
-				// mögliche Lösung: 1. Durchlauf nicht als txt ausgeben 2. Durchlauf als verkettete Liste speichern
 				
 				//printWriter = new PrintWriter(anwendung);
 				//List<String> use = new LinkedList<String>();
@@ -141,8 +137,22 @@ public class train_chunker {
 					else{
 						printWriter.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
 					}
-
 				}
+				
+				//Zweiter Durchlauf
+//				int ubereins=0;
+//				for (int p = 0; p<rules.size();p++){
+//					Rule rul2 = new Rule(rules.get(p));
+//					String s = rul2.getArruracy();
+//					float rul2acc = Float.parseFloat(s);
+//					if (rul2acc > 0){
+//						ubereins++;
+//						for (int q = 0; q<postag.size(); q++){
+//							rules.add("-1="+postag.get(q)+","+rules.get(p));
+//						}
+//					}
+//				}
+//				System.out.println(rules.size());
 
 			}catch (FileNotFoundException e){
 				e.printStackTrace();
@@ -161,9 +171,7 @@ public class train_chunker {
 
 		// Ausgabe der Dauer des Programms
 		final long timeEnd = System.currentTimeMillis(); 
-		final long time = (((timeEnd - timeStart)/1000)/60)/60;
-		System.out.println("Dauer des Programms: " + time + " Stunden."); 
-
-
+		final long time = (((timeEnd - timeStart)/1000)/60);
+		System.out.println("Dauer des Programms: " + time + " Min."); 
 	}
 }
