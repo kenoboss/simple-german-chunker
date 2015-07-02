@@ -18,7 +18,7 @@ import java.util.List;
 public class train_chunker {
 
 	public static void main(String[] args) {
-		
+
 		final long timeStart = System.currentTimeMillis();
 		final long timeStartReading = System.currentTimeMillis();
 
@@ -30,13 +30,13 @@ public class train_chunker {
 		File chunked_corpus = new File("ressources/chunked_corpus.txt");
 		File tagged_corpus = new File("ressources/tagged_corpus.txt");
 		File tagPos = new File("ressources/tagPos.txt");
-		
-		
+
+
 		//Erstellung von Arrays und Listen
-//		String [] corpus_chunked = new String [1574818];
-//		String [] corpus_tagged = new String [1574818];
-//		String [] postag = new String[50];
-		
+		//		String [] corpus_chunked = new String [1574818];
+		//		String [] corpus_tagged = new String [1574818];
+		//		String [] postag = new String[50];
+
 		List<String> corpus_chunked = new ArrayList<String>();
 		List<String> corpus_tagged = new ArrayList<String>();
 		List<String> postag = new ArrayList<String>();
@@ -81,9 +81,9 @@ public class train_chunker {
 		final long timeReading = (timeEndReading - timeStartReading)/1000;
 		System.out.println("Dauer des Einlesens: " + timeReading + " Sek."); 
 
-//		String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
-//		String [] rules = new String [ctags.length*postag.size()];
-		
+		//		String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
+		//		String [] rules = new String [ctags.length*postag.size()];
+
 		List<String> ctags = new ArrayList<String>();
 		ctags.add("B-NC");
 		ctags.add("I-NC");
@@ -91,9 +91,10 @@ public class train_chunker {
 		ctags.add("I-VC");
 		ctags.add("B-PC");
 		ctags.add("I-PC");
-		List<String> rules = new ArrayList<String>();
+		List<String> rulesP0 = new ArrayList<String>();
 
-		// Erstellen der ersten Regeln (POS-Tag an der aktuellen Position 0
+		// Erstellen der Regeln: Für POS-Tags an Positionen -2,-1,0,1,2
+		// Erstellen der Regeln an Position 0
 		final long timeStartFirstRules = System.currentTimeMillis();
 		PrintWriter printWriter = null;
 		try{
@@ -101,8 +102,8 @@ public class train_chunker {
 
 			for (int j = 0; j < postag.size(); j++){
 				for (int k = 0; k < ctags.size(); k++){
-					printWriter.println("0="+postag.get(j)+"=>"+ctags.get(k)+"=> Freq: "+0.0+" Succ: "+0.0+" Acc: "+100.0);
-					rules.add("0="+postag.get(j)+"=>"+ctags.get(k)+"=> Freq: "+0.0+" Succ: "+0.0+" Acc: "+100.0);
+					printWriter.println("0="+postag.get(j)+"=>"+ctags.get(k));
+					rulesP0.add("0="+postag.get(j)+"=>"+ctags.get(k));
 				}
 			}
 		}catch (FileNotFoundException e){
@@ -118,20 +119,20 @@ public class train_chunker {
 		final long timeFirstRules = (timeEndFirstRules - timeStartFirstRules)/1000;
 		System.out.println("Dauer des Erstellen der Regeln: " + timeFirstRules + " Sek."); 
 
-		float [] freq = new float [rules.size()];
-		float [] succ = new float [rules.size()];
-		for (int n = 0; n < rules.size(); n++){
+		float [] freq = new float [rulesP0.size()];
+		float [] succ = new float [rulesP0.size()];
+		for (int n = 0; n < rulesP0.size(); n++){
 			freq[n] = 0;
 			succ[n] = 0;
 		}
-		
+
 		// Anwendung der ersten Regeln 
 		final long timeStartFirstUse = System.currentTimeMillis();
 		PrintWriter printWriter2 = null;
 		try{
 			//printWriter = new PrintWriter(anwendung);
 			//List<String> use = new LinkedList<String>();
-			
+
 			// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln der Länge 1 
 			for (int i = 0; i< corpus_tagged.size(); i++){
 				Token tok1 = new Token (corpus_tagged.get(i));
@@ -140,8 +141,8 @@ public class train_chunker {
 				Token tok2 = new Token (corpus_chunked.get(i));
 				String chunk = tok2.getCtag();
 
-				for (int m = 0; m < rules.size(); m++){
-					Rule rul1 = new Rule(rules.get(m));
+				for (int m = 0; m < rulesP0.size(); m++){
+					Rule rul1 = new Rule(rulesP0.get(m));
 					String rulpos = rul1.getPostag()[0];
 					String rulchunk = rul1.getChunktag();
 
@@ -167,19 +168,19 @@ public class train_chunker {
 		final long timeEndFirstUse = System.currentTimeMillis(); 
 		final long timeFirstUse = (timeEndFirstUse - timeStartFirstUse)/1000;
 		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeFirstUse + " Sek."); 
-		
-		
+
+
 		// Auswertung der Regeln auf ihre Frequenz und Genauigkeit
 		final long timeStartTesting = System.currentTimeMillis();
 		PrintWriter printWriter3 = null;
 		try{
 			printWriter3 = new PrintWriter(auswertung);
-			for (int o = 0; o<rules.size();o++){
+			for (int o = 0; o<rulesP0.size();o++){
 				if (freq[o]>0){
-					printWriter3.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+(succ[o]/freq[o])*100);
+					printWriter3.println(rulesP0.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]+" Acc: "+(succ[o]/freq[o])*100);
 				}
 				else{
-					printWriter3.println(rules.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
+					printWriter3.println(rulesP0.get(o)+"=> Freq: "+freq[o]+" Succ: "+succ[o]);
 				}
 			}
 		}catch (FileNotFoundException e){
@@ -194,22 +195,72 @@ public class train_chunker {
 		final long timeEndTesting = System.currentTimeMillis(); 
 		final long timeTesting = (timeEndTesting - timeStartTesting)/1000;
 		System.out.println("Dauer der Bewertung der Regeln: " + timeTesting + " Sek."); 
+
+		// Berechnung der Vollständigkeit und Genauigkeit aller Regeln
+		float summeFreq=0;
+		float summeSucc=0;
+
+		for (int p = 0; p< freq.length;p++){
+			summeFreq=summeFreq+freq[p];
+			summeSucc=summeSucc+succ[p];
+		}
+		float summeAcc=(summeSucc/summeFreq)*100;
+		System.out.println("Regeln an der Position 0\t Genauigkeit: "+summeAcc+" %");
+
+
 		
-		//Erstellen der Regeln für die Positionen -1 und 0
-		// PROBLEM: Out.OfMemoryError trotz -Xmx4096m
-//		int ubereins=0;
-//		for (int p = 0; p<rules.size();p++){
-//			Rule rul2 = new Rule(rules.get(p));
-//			String s = rul2.getArruracy();
-//			float rul2acc = Float.parseFloat(s);
-//			if (rul2acc > 0){
-//				ubereins++;
-//				for (int q = 0; q<postag.size(); q++){
-//					rules.add("-1="+postag.get(q)+","+rules.get(p));
-//				}
-//			}
-//		}
-//		System.out.println(rules.size());
+		//Erstellen der Regeln für die Positionen -1,0
+		final long timeStartMoreRules = System.currentTimeMillis();
+		List<String> rulesPM1 = new ArrayList<String>();
+		PrintWriter printWriter4 = null;
+		try{
+			printWriter4 = new PrintWriter(rule_file);
+
+			for (int j=0; j< rulesP0.size();j++){
+				printWriter4.println(rulesP0.get(j));
+				for (int k=0; k<postag.size();k++){
+					rulesPM1.add("-1="+postag.get(k)+","+rulesP0.get(j));
+					printWriter4.println("-1="+postag.get(k)+","+rulesP0.get(j));
+				}
+			}
+		}catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
+		finally{
+			if ( printWriter4 != null ) {
+				printWriter4.close();
+			}
+		}
+
+		//Erstellen der Regeln für die Positionen -2,-1,0
+		List<String> rulesPM2 = new ArrayList<String>();
+		PrintWriter printWriter5 = null;
+		try{
+			printWriter5 = new PrintWriter(rule_file);
+			for (int i=0;i<rulesP0.size();i++){
+				printWriter5.println(rulesP0.get(i));
+			}
+			for (int i=0;i<rulesPM1.size();i++){
+				printWriter5.println(rulesPM1.get(i));
+			}
+			for (int j=0; j< rulesPM1.size();j++){
+				for (int k=0; k<postag.size();k++){
+					rulesPM2.add("-2="+postag.get(k)+","+rulesPM1.get(j));
+					printWriter5.println("-2="+postag.get(k)+","+rulesPM1.get(j));
+				}
+			}
+		}catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
+		finally{
+			if ( printWriter5 != null ) {
+				printWriter5.close();
+			}
+		}
+		
+		final long timeEndMoreRules = System.currentTimeMillis(); 
+		final long timeMoreRules = (timeEndMoreRules - timeStartMoreRules)/1000;
+		System.out.println("Dauer des Erstellens der Regeln -2,-1,0: " + timeTesting + " Sek."); 
 
 		final long timeEnd = System.currentTimeMillis(); 
 		final long time = (timeEnd - timeStart)/1000;
