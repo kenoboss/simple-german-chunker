@@ -1,6 +1,6 @@
 /*
  * Diese File ist Inhalt des Programms "Simple-German-Chunker"
- * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
+ * Hier werden die verschiedenen Regeln fÃ¼r den Chunker erzeugt und 
  * auch auf das Trainingskorpus angewendet.
  */
 
@@ -93,7 +93,7 @@ public class train_chunker {
 		ctags.add("I-PC");
 		List<String> rulesP0 = new ArrayList<String>();
 
-		// Erstellen der Regeln: Für POS-Tags an Positionen -2,-1,0,1,2
+		// Erstellen der Regeln: FÃ¼r POS-Tags an Positionen -2,-1,0,1,2
 		// Erstellen der Regeln an Position 0
 		final long timeStartFirstRules = System.currentTimeMillis();
 		PrintWriter printWriter = null;
@@ -133,7 +133,7 @@ public class train_chunker {
 			//printWriter = new PrintWriter(anwendung);
 			//List<String> use = new LinkedList<String>();
 
-			// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln der Länge 1 
+			// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln der LÃ¤nge 1 
 			for (int i = 0; i< corpus_tagged.size(); i++){
 				Token tok1 = new Token (corpus_tagged.get(i));
 				String pos = tok1.getTag();
@@ -196,7 +196,7 @@ public class train_chunker {
 		final long timeTesting = (timeEndTesting - timeStartTesting)/1000;
 		System.out.println("Dauer der Bewertung der Regeln: " + timeTesting + " Sek."); 
 
-		// Berechnung der Vollständigkeit und Genauigkeit aller Regeln
+		// Berechnung der VollstÃ¤ndigkeit und Genauigkeit aller Regeln
 		float summeFreq=0;
 		float summeSucc=0;
 
@@ -209,7 +209,7 @@ public class train_chunker {
 
 
 		
-		//Erstellen der Regeln für die Positionen -1,0
+		//Erstellen der Regeln fÃ¼r die Positionen -1,0
 		final long timeStartMoreRules = System.currentTimeMillis();
 		List<String> rulesPM1 = new ArrayList<String>();
 		PrintWriter printWriter4 = null;
@@ -232,7 +232,8 @@ public class train_chunker {
 			}
 		}
 
-		//Erstellen der Regeln für die Positionen -2,-1,0
+		//Erstellen der Regeln fÃ¼r die Positionen -2,-1,0
+		// PROBLEM: Regeln rulesPM1 und rulesPM2 sind doppelt vorhanden.
 		List<String> rulesPM2 = new ArrayList<String>();
 		PrintWriter printWriter5 = null;
 		try{
