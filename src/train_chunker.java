@@ -1,6 +1,6 @@
 /*
  * Diese File ist Inhalt des Programms "Simple-German-Chunker"
- * Hier werden die verschiedenen Regeln fÃ¼r den Chunker erzeugt und 
+ * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
  * auch auf das Trainingskorpus angewendet.
  */
 
@@ -20,8 +20,7 @@ public class train_chunker {
 	public static void main(String[] args) {
 
 		final long timeStart = System.currentTimeMillis();
-		final long timeStartReading = System.currentTimeMillis();
-
+		
 		//Alle Pfadangaben
 		File rule_file = new File("results/rules.txt");
 		File anwendung = new File("resultsanwendung.txt");
@@ -32,42 +31,33 @@ public class train_chunker {
 		File tagPos = new File("ressources/tagPos.txt");
 
 
-		//Erstellung von Arrays und Listen
-		//		String [] corpus_chunked = new String [1574818];
-		//		String [] corpus_tagged = new String [1574818];
-		//		String [] postag = new String[50];
-
 		List<String> corpus_chunked = new ArrayList<String>();
 		List<String> corpus_tagged = new ArrayList<String>();
 		List<String> postag = new ArrayList<String>();
-
+		
+		// START EINLESEN
+		final long timeStartReading = System.currentTimeMillis();
 		try {
 			// Einlesen des chunk-getaggten Korpus
 			BufferedReader incc  = new BufferedReader(new InputStreamReader(new FileInputStream (chunked_corpus), "UTF8"));			
 			String line = null;
 
-			int indexcc = 0;
 			while (( line = incc.readLine()) != null) {
 				corpus_chunked.add(line);
-				indexcc++;
 			}
 			incc.close();
 
 			// Einlesen des POS-getaggten Korpus
 			BufferedReader intc  = new BufferedReader(new InputStreamReader(new FileInputStream (tagged_corpus), "UTF8"));
-			int indextc = 0;
 			while (( line = intc.readLine()) != null) {
 				corpus_tagged.add(line);
-				indextc++;
 			}
 			intc.close();
 
 			// Einlesen der POS-Tags in ArrayList
 			BufferedReader inpt  = new BufferedReader(new InputStreamReader(new FileInputStream (tagPos), "UTF8"));			
-			int indexpt = 0;
 			while (( line = inpt.readLine()) != null) {
 				postag.add(line);
-				indexpt++;
 			}
 			inpt.close();
 
@@ -80,10 +70,28 @@ public class train_chunker {
 		final long timeEndReading = System.currentTimeMillis(); 
 		final long timeReading = (timeEndReading - timeStartReading)/1000;
 		System.out.println("Dauer des Einlesens: " + timeReading + " Sek."); 
+		// ENDE EINLESEN
 
-		//		String [] ctags = {"B-NC", "I-NC", "B-VC", "I-VC", "B-PC", "I-PC"};
-		//		String [] rules = new String [ctags.length*postag.size()];
-
+		
+		// START REGELERSTELLUNG
+		final long timeStartRules = System.currentTimeMillis(); 
+		List<String> rulesP0 = new ArrayList<String>();			// Regeln an der Stelle: 0 				done
+		List<String> rulesP0m1 = new ArrayList<String>();		// Regeln an der Stelle: -1,0			done
+		List<String> rulesP0m1m2 = new ArrayList<String>();		// Regeln an der Stelle: -2,-1,0		done
+		List<String> rulesP0p1 = new ArrayList<String>();		// Regeln an der Stelle: 0,1			done
+		List<String> rulesP0p1m1 = new ArrayList<String>();		// Regeln an der Stelle: -1,0,1			done
+		List<String> rulesP0p1p2 = new ArrayList<String>();		// Regeln an der Stelle: 0,1,2			done
+		
+		/*Problem: Bei den folgenden Regeln werden mehrere 10 Millionen Regeln erstellt
+		 * Selbst mit 4096MB zugewiesenem Arbeitsspeicher dauert es mehrere Minuten zum 
+		 * Erstellen der Regeln. 
+		 * Daher wurde das Erstellen dieser Regeln auskommentiert. Zeile 127-149 und Zeile 184-192
+		 */
+		List<String> rulesP0p1p2m1 = new ArrayList<String>();	// Regeln an der Stelle: -1,0,1,2		done
+		List<String> rulesP0p1m1m2 = new ArrayList<String>();	// Regeln an der Stelle: -2,-1,0,1		done
+		List<String> rulesP0p1p2m1m2 = new ArrayList<String>();	// Regeln an der Stelle: -2,-1,0,1,2	done
+		
+		// Chunk-Tag, die verwendet werden: Nominal-,Verbal- und Präpositionalchunk
 		List<String> ctags = new ArrayList<String>();
 		ctags.add("B-NC");
 		ctags.add("I-NC");
@@ -91,21 +99,127 @@ public class train_chunker {
 		ctags.add("I-VC");
 		ctags.add("B-PC");
 		ctags.add("I-PC");
-		List<String> rulesP0 = new ArrayList<String>();
+		
+		// Erstellung der Regeln an der Stelle: 0
+		for (int i = 0; i < postag.size(); i++){
+			for (int j = 0; j < ctags.size(); j++){
+				rulesP0.add("0="+postag.get(i)+"=>"+ctags.get(j));
+			}
+		}
+		System.out.println("Anzahl der Regeln 0: "+rulesP0.size());
 
-		// Erstellen der Regeln: FÃ¼r POS-Tags an Positionen -2,-1,0,1,2
-		// Erstellen der Regeln an Position 0
-		final long timeStartFirstRules = System.currentTimeMillis();
+		// Erstellung der Regeln an der Stelle: -1,0
+		for (int i=0; i< rulesP0.size();i++){
+			for (int j=0; j<postag.size();j++){
+				rulesP0m1.add("-1="+postag.get(j)+","+rulesP0.get(i));
+			}
+		}
+		System.out.println("Anzahl der Regeln -1,0: "+rulesP0m1.size());
+
+		// Erstellung der Regeln an der Stelle: -2,-1,0
+		for (int i=0; i<rulesP0m1.size();i++){
+			for (int j=0; j<postag.size();j++){
+				rulesP0m1m2.add("-2="+postag.get(j)+","+rulesP0m1.get(i));
+			}
+		}
+		System.out.println("Anzahl der Regeln -2,-1,0: "+rulesP0m1m2.size());
+
+		// Erstellung der Regeln an der Stelle: 0,1
+		for (int i=0; i< rulesP0.size();i++){
+			String[] rulesP0split = new String [rulesP0.size()];	
+			rulesP0split=rulesP0.get(i).split("=>");
+			for (int j=0; j<postag.size();j++){
+				rulesP0p1.add(rulesP0split[0]+",1="+postag.get(j)+"=>"+rulesP0split[1]);
+			}
+		}
+		System.out.println("Anzahl der Regeln 0,1: "+rulesP0p1.size());
+
+		// Erstellung der Regeln an der Stelle: -1,0,1
+		for (int i=0; i<rulesP0p1.size();i++){
+			for (int j=0; j<postag.size();j++){
+				rulesP0p1m1.add("-1="+postag.get(j)+","+rulesP0p1.get(i));
+			}
+		}
+		System.out.println("Anzahl der Regeln -1,0,1: "+rulesP0p1m1.size());
+
+		// Erstellung der Regeln an der Stelle: 0,1,2
+		for (int i=0; i< rulesP0p1.size();i++){
+			String[] rulesP0p1split = new String [rulesP0p1.size()];	
+			rulesP0p1split=rulesP0p1.get(i).split("=>");
+			for (int j=0; j<postag.size();j++){
+				rulesP0p1p2.add(rulesP0p1split[0]+",2="+postag.get(j)+"=>"+rulesP0p1split[1]);
+			}
+		}
+		System.out.println("Anzahl der Regeln 0,1,2: "+rulesP0p1p2.size());
+
+//		// Erstellung der Regeln an der Stelle: -1,0,1,2
+//		for (int i=0; i< rulesP0p1p2.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1p2m1.add("-1="+postag.get(j)+","+rulesP0p1p2.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -1,0,1,2: "+rulesP0p1p2m1.size());
+//
+//		// Erstellung der Regeln an der Stelle: -2,-1,0,1
+//		for (int i=0; i<rulesP0p1m1.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1m1m2.add("-2="+postag.get(j)+","+rulesP0p1m1.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -2,-1,0,1: "+rulesP0p1m1m2.size());
+//
+//		// Erstellung der Regeln an der Stelle: -2,-1,0,1,2
+//		for (int i=0; i< rulesP0p1p2m1.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1p2m1m2.add("-2="+postag.get(j)+","+rulesP0p1p2m1.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
+
+
+
+		long anzahlrules = rulesP0.size()+rulesP0m1.size()+rulesP0m1m2.size()+rulesP0p1.size()+
+				rulesP0p1m1.size()+rulesP0p1p2.size()+rulesP0p1p2m1.size()+rulesP0p1p2m1m2.size()+
+				rulesP0p1m1m2.size();
+		System.out.println("Anzahl aller Regeln: "+anzahlrules);
+		
+		// Regeln werden in die Datei 'rules.txt' geschrieben
 		PrintWriter printWriter = null;
-		try{
+		try {
 			printWriter = new PrintWriter(rule_file);
 
-			for (int j = 0; j < postag.size(); j++){
-				for (int k = 0; k < ctags.size(); k++){
-					printWriter.println("0="+postag.get(j)+"=>"+ctags.get(k));
-					rulesP0.add("0="+postag.get(j)+"=>"+ctags.get(k));
-				}
+			for (int i=0;i<rulesP0.size();i++){
+				printWriter.println(rulesP0.get(i));
 			}
+
+			for (int i=0;i<rulesP0m1.size();i++){
+				printWriter.println(rulesP0m1.get(i));
+			}
+
+			for (int i=0;i<rulesP0m1m2.size();i++){
+				printWriter.println(rulesP0m1m2.get(i));
+			}
+
+			for (int i=0;i<rulesP0p1.size();i++){
+				printWriter.println(rulesP0p1.get(i));
+			}
+			for (int i=0;i<rulesP0p1m1.size();i++){
+				printWriter.println(rulesP0p1m1.get(i));
+			}
+			for (int i=0;i<rulesP0p1p2.size();i++){
+				printWriter.println(rulesP0p1p2.get(i));
+			}
+//			for (int i=0;i<rulesP0p1p2m1.size();i++){
+//				printWriter.println(rulesP0p1p2m1.get(i));
+//			}
+//			for (int i=0;i<rulesP0p1m1m2.size();i++){
+//				printWriter.println(rulesP0p1m1m2.get(i));
+//			}
+//			for (int i=0;i<rulesP0p1p2m1m2.size();i++){
+//				printWriter.println(rulesP0p1p2m1m2.get(i));
+//			}
+
+
 		}catch (FileNotFoundException e){
 			e.printStackTrace();
 		}
@@ -114,11 +228,13 @@ public class train_chunker {
 				printWriter.close();
 			}
 		}
-		// Dauer des Erstellens der ersten Regeln 
-		final long timeEndFirstRules = System.currentTimeMillis(); 
-		final long timeFirstRules = (timeEndFirstRules - timeStartFirstRules)/1000;
-		System.out.println("Dauer des Erstellen der Regeln: " + timeFirstRules + " Sek."); 
+		
+		final long timeEndRules = System.currentTimeMillis(); 
+		final long timeRules = (timeEndRules - timeStartRules)/1000;
+		System.out.println("Dauer der Regelerstellung " + timeRules + " Sek."); 
+		// ENDE REGELERSTELLUNG
 
+		// START ANWENDUNG REGELN AUF CORPUS
 		float [] freq = new float [rulesP0.size()];
 		float [] succ = new float [rulesP0.size()];
 		for (int n = 0; n < rulesP0.size(); n++){
@@ -133,7 +249,7 @@ public class train_chunker {
 			//printWriter = new PrintWriter(anwendung);
 			//List<String> use = new LinkedList<String>();
 
-			// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln der LÃ¤nge 1 
+			// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln der Länge 1 
 			for (int i = 0; i< corpus_tagged.size(); i++){
 				Token tok1 = new Token (corpus_tagged.get(i));
 				String pos = tok1.getTag();
@@ -164,7 +280,7 @@ public class train_chunker {
 				printWriter2.close();
 			}
 		}
-		// Dauer des Erstellens der ersten Regeln 
+		// Dauer der Anwendung der ersten Regeln 
 		final long timeEndFirstUse = System.currentTimeMillis(); 
 		final long timeFirstUse = (timeEndFirstUse - timeStartFirstUse)/1000;
 		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeFirstUse + " Sek."); 
@@ -196,7 +312,7 @@ public class train_chunker {
 		final long timeTesting = (timeEndTesting - timeStartTesting)/1000;
 		System.out.println("Dauer der Bewertung der Regeln: " + timeTesting + " Sek."); 
 
-		// Berechnung der VollstÃ¤ndigkeit und Genauigkeit aller Regeln
+		// Berechnung der Vollständigkeit und Genauigkeit aller Regeln
 		float summeFreq=0;
 		float summeSucc=0;
 
@@ -206,62 +322,9 @@ public class train_chunker {
 		}
 		float summeAcc=(summeSucc/summeFreq)*100;
 		System.out.println("Regeln an der Position 0\t Genauigkeit: "+summeAcc+" %");
-
-
 		
-		//Erstellen der Regeln fÃ¼r die Positionen -1,0
-		final long timeStartMoreRules = System.currentTimeMillis();
-		List<String> rulesPM1 = new ArrayList<String>();
-		PrintWriter printWriter4 = null;
-		try{
-			printWriter4 = new PrintWriter(rule_file);
+		// ENDE ANWENDUNG REGELN AUF CORPUS
 
-			for (int j=0; j< rulesP0.size();j++){
-				printWriter4.println(rulesP0.get(j));
-				for (int k=0; k<postag.size();k++){
-					rulesPM1.add("-1="+postag.get(k)+","+rulesP0.get(j));
-					printWriter4.println("-1="+postag.get(k)+","+rulesP0.get(j));
-				}
-			}
-		}catch (FileNotFoundException e){
-			e.printStackTrace();
-		}
-		finally{
-			if ( printWriter4 != null ) {
-				printWriter4.close();
-			}
-		}
-
-		//Erstellen der Regeln fÃ¼r die Positionen -2,-1,0
-		// PROBLEM: Regeln rulesPM1 und rulesPM2 sind doppelt vorhanden.
-		List<String> rulesPM2 = new ArrayList<String>();
-		PrintWriter printWriter5 = null;
-		try{
-			printWriter5 = new PrintWriter(rule_file);
-			for (int i=0;i<rulesP0.size();i++){
-				printWriter5.println(rulesP0.get(i));
-			}
-			for (int i=0;i<rulesPM1.size();i++){
-				printWriter5.println(rulesPM1.get(i));
-			}
-			for (int j=0; j< rulesPM1.size();j++){
-				for (int k=0; k<postag.size();k++){
-					rulesPM2.add("-2="+postag.get(k)+","+rulesPM1.get(j));
-					printWriter5.println("-2="+postag.get(k)+","+rulesPM1.get(j));
-				}
-			}
-		}catch (FileNotFoundException e){
-			e.printStackTrace();
-		}
-		finally{
-			if ( printWriter5 != null ) {
-				printWriter5.close();
-			}
-		}
-		
-		final long timeEndMoreRules = System.currentTimeMillis(); 
-		final long timeMoreRules = (timeEndMoreRules - timeStartMoreRules)/1000;
-		System.out.println("Dauer des Erstellens der Regeln -2,-1,0: " + timeTesting + " Sek."); 
 
 		final long timeEnd = System.currentTimeMillis(); 
 		final long time = (timeEnd - timeStart)/1000;
