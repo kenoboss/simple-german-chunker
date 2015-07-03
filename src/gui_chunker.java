@@ -17,7 +17,7 @@ import java.awt.Font;
 import javax.swing.JTextPane;
 
 
-public class first_frame extends JFrame {
+public class gui_chunker extends JFrame {
 
 	private JPanel contentPane;
 
@@ -25,7 +25,7 @@ public class first_frame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					first_frame frame = new first_frame();
+					gui_chunker frame = new gui_chunker();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,7 @@ public class first_frame extends JFrame {
 		});
 	}
 	
-	public first_frame() {
+	public gui_chunker() {
 		setTitle("Simple German Chunker");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 550);
