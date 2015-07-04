@@ -102,6 +102,11 @@ public class train_chunker {
 		ctags.add("I-VC");
 		ctags.add("B-PC");
 		ctags.add("I-PC");
+		
+		/*
+		 * Müssen die Regeln für mehrere Positionen die Chunks 'B-XC' enthalten, da ja bereits alle Anfänge von Chunks
+		 * mit den Regeln an der Position 0 abgedeckt sind? 
+		 */
 
 		// Erstellung der Regeln an der Stelle: 0
 		for (int i = 0; i < postag.size(); i++){
@@ -155,32 +160,32 @@ public class train_chunker {
 		}
 		System.out.println("Anzahl der Regeln 0,1,2: "+rulesP0p1p2.size());
 
-		//		// Erstellung der Regeln an der Stelle: -1,0,1,2
-		//		for (int i=0; i< rulesP0p1p2.size();i++){
-		//			for (int j=0; j<postag.size();j++){
-		//				rulesP0p1p2m1.add("-1="+postag.get(j)+","+rulesP0p1p2.get(i));
-		//			}
-		//		}
-		//		System.out.println("Anzahl der Regeln -1,0,1,2: "+rulesP0p1p2m1.size());
-		//
-		//		// Erstellung der Regeln an der Stelle: -2,-1,0,1
-		//		for (int i=0; i<rulesP0p1m1.size();i++){
-		//			for (int j=0; j<postag.size();j++){
-		//				rulesP0p1m1m2.add("-2="+postag.get(j)+","+rulesP0p1m1.get(i));
-		//			}
-		//		}
-		//		System.out.println("Anzahl der Regeln -2,-1,0,1: "+rulesP0p1m1m2.size());
-		//
-		//		// Erstellung der Regeln an der Stelle: -2,-1,0,1,2
-		//		for (int i=0; i< rulesP0p1p2m1.size();i++){
-		//			for (int j=0; j<postag.size();j++){
-		//				rulesP0p1p2m1m2.add("-2="+postag.get(j)+","+rulesP0p1p2m1.get(i));
-		//			}
-		//		}
-		//		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
+//		// Erstellung der Regeln an der Stelle: -1,0,1,2
+//		for (int i=0; i< rulesP0p1p2.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1p2m1.add("-1="+postag.get(j)+","+rulesP0p1p2.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -1,0,1,2: "+rulesP0p1p2m1.size());
+//
+//		// Erstellung der Regeln an der Stelle: -2,-1,0,1
+//		for (int i=0; i<rulesP0p1m1.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1m1m2.add("-2="+postag.get(j)+","+rulesP0p1m1.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -2,-1,0,1: "+rulesP0p1m1m2.size());
+//
+//		// Erstellung der Regeln an der Stelle: -2,-1,0,1,2
+//		for (int i=0; i< rulesP0p1p2m1.size();i++){
+//			for (int j=0; j<postag.size();j++){
+//				rulesP0p1p2m1m2.add("-2="+postag.get(j)+","+rulesP0p1p2m1.get(i));
+//			}
+//		}
+//		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
 
 
-
+		// Summe aller Regeln
 		long anzahlrules = rulesP0.size()+rulesP0m1.size()+rulesP0m1m2.size()+rulesP0p1.size()+
 				rulesP0p1m1.size()+rulesP0p1p2.size()+rulesP0p1p2m1.size()+rulesP0p1p2m1m2.size()+
 				rulesP0p1m1m2.size();
@@ -212,15 +217,15 @@ public class train_chunker {
 			for (int i=0;i<rulesP0p1p2.size();i++){
 				printWriter.println(rulesP0p1p2.get(i));
 			}
-			//			for (int i=0;i<rulesP0p1p2m1.size();i++){
-			//				printWriter.println(rulesP0p1p2m1.get(i));
-			//			}
-			//			for (int i=0;i<rulesP0p1m1m2.size();i++){
-			//				printWriter.println(rulesP0p1m1m2.get(i));
-			//			}
-			//			for (int i=0;i<rulesP0p1p2m1m2.size();i++){
-			//				printWriter.println(rulesP0p1p2m1m2.get(i));
-			//			}
+//			for (int i=0;i<rulesP0p1p2m1.size();i++){
+//				printWriter.println(rulesP0p1p2m1.get(i));
+//			}
+//			for (int i=0;i<rulesP0p1m1m2.size();i++){
+//				printWriter.println(rulesP0p1m1m2.get(i));
+//			}
+//			for (int i=0;i<rulesP0p1p2m1m2.size();i++){
+//				printWriter.println(rulesP0p1p2m1m2.get(i));
+//			}
 
 
 		}catch (FileNotFoundException e){
@@ -249,7 +254,10 @@ public class train_chunker {
 		final long timeStartFirstUse = System.currentTimeMillis();
 
 		// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln an der Position 0
-		for (int i = 0; i< corpus_tagged.size()-1000000; i++){
+		/*
+		 * Sollte man statt einer for-schleife über den Corpus zu iterieren, mit einem Iterator itereieren?
+		 */
+		for (int i = 0; i< corpus_tagged.size(); i++){
 			Token tok1 = new Token (corpus_tagged.get(i));
 			String pos = tok1.getTag();
 
@@ -277,39 +285,40 @@ public class train_chunker {
 		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeFirstUse + " Sek."); 
 
 
-		final long timeStartSecondUse = System.currentTimeMillis();
+		
 
-		// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln an der Position -1,0
-		for (int i = 1; i< corpus_tagged.size()-1000000; i++){	// Start im Corpus an der Stelle 1, statt 0
-			Token tokp1 = new Token (corpus_tagged.get(i));
-			String pos1 = tokp1.getTag();
-			Token tokp2 = new Token (corpus_tagged.get(i-1));	// vorheriges Token
-			String pos2 = tokp2.getTag();
-
-			Token tokc1 = new Token (corpus_chunked.get(i));
-			String chunk1 = tokc1.getCtag();
-
-			for (int j = 0; j < rulesP0m1.size(); j++){
-				Rule rul1 = new Rule(rulesP0m1.get(j));
-				String rulpos = rul1.getPostag()[0];
-				Rule rul2 = new Rule(rulesP0m1.get(j));
-				String rulpos2 = rul2.getPostag()[1];
-
-				String rulchunk = rul1.getChunktag();
-
-				if (pos1.equals(rulpos) && pos2.equals(rulpos2)){
-					freq[j]++;
-					if (chunk1.equals(rulchunk)){
-						succ[j]++;
-					}
-				}
-				else{
-				}
-			}
-		}
-		final long timeEndSecondUse = System.currentTimeMillis();
-		final long timeSecondUse = (timeEndSecondUse - timeStartSecondUse)/1000;
-		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeSecondUse + " Sek."); 
+//		// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln an der Position -1,0
+//		final long timeStartSecondUse = System.currentTimeMillis();
+//		for (int i = 1; i< corpus_tagged.size()-1500000; i++){	// Start im Corpus an der Stelle 1, statt 0
+//			Token tokp1 = new Token (corpus_tagged.get(i));
+//			String pos1 = tokp1.getTag();
+//			Token tokp2 = new Token (corpus_tagged.get(i-1));	// vorheriges Token
+//			String pos2 = tokp2.getTag();
+//
+//			Token tokc1 = new Token (corpus_chunked.get(i));
+//			String chunk1 = tokc1.getCtag();
+//
+//			for (int j = 0; j < rulesP0m1.size(); j++){
+//				Rule rul1 = new Rule(rulesP0m1.get(j));
+//				String rulpos = rul1.getPostag()[0];
+//				Rule rul2 = new Rule(rulesP0m1.get(j));
+//				String rulpos2 = rul2.getPostag()[1];
+//
+//				String rulchunk = rul1.getChunktag();
+//
+//				if (pos1.equals(rulpos) && pos2.equals(rulpos2)){
+//					freq[j]++;
+//					if (chunk1.equals(rulchunk)){
+//						succ[j]++;
+//					}
+//				}
+//				else{
+//				}
+//			}
+//		}
+//		final long timeEndSecondUse = System.currentTimeMillis();
+//		final long timeSecondUse = (timeEndSecondUse - timeStartSecondUse)/1000;
+//		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeSecondUse + " Sek."); 
 
 
 		// Auswertung der Regeln auf ihre Frequenz und Genauigkeit
