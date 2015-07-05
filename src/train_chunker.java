@@ -3,30 +3,26 @@
  * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
  * auch auf das Trainingskorpus angewendet.
  */
-//test
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Date;
 
 public class train_chunker {
 
 	public static void main(String[] args) {
 
-		Date date = new Date();
-		System.out.println(date.toString());
 		final double timeStart = System.currentTimeMillis();
 
 		//Alle Pfadangaben
 		File rule_file = new File("results/rules.txt");
-		File anwendung = new File("resultsanwendung.txt");
 		File auswertung = new File("results/regel_auswertung.txt");
 
 		File chunked_corpus = new File("ressources/chunked_corpus.txt");
@@ -97,16 +93,11 @@ public class train_chunker {
 		// Chunk-Tag, die verwendet werden: Nominal-,Verbal- und Präpositionalchunk
 		List<String> ctags = new ArrayList<String>();
 		ctags.add("B-NC");
-		ctags.add("I-NC");
 		ctags.add("B-VC");
-		ctags.add("I-VC");
 		ctags.add("B-PC");
+		ctags.add("I-NC");
+		ctags.add("I-VC");
 		ctags.add("I-PC");
-		
-		/*
-		 * Müssen die Regeln für mehrere Positionen die Chunks 'B-XC' enthalten, da ja bereits alle Anfänge von Chunks
-		 * mit den Regeln an der Position 0 abgedeckt sind? 
-		 */
 
 		// Erstellung der Regeln an der Stelle: 0
 		for (int i = 0; i < postag.size(); i++){
@@ -116,6 +107,9 @@ public class train_chunker {
 		}
 		System.out.println("Anzahl der Regeln 0: "+rulesP0.size());
 
+		/*
+		 * Regeln sich auf mehrere Positionen beziehen benötigen keinen B-XC.
+		 */
 		// Erstellung der Regeln an der Stelle: -1,0
 		for (int i=0; i< rulesP0.size();i++){
 			for (int j=0; j<postag.size();j++){
@@ -185,7 +179,7 @@ public class train_chunker {
 //		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
 
 
-		// Summe aller Regeln
+
 		long anzahlrules = rulesP0.size()+rulesP0m1.size()+rulesP0m1m2.size()+rulesP0p1.size()+
 				rulesP0p1m1.size()+rulesP0p1p2.size()+rulesP0p1p2m1.size()+rulesP0p1p2m1m2.size()+
 				rulesP0p1m1m2.size();
@@ -242,83 +236,95 @@ public class train_chunker {
 		System.out.println("Dauer der Regelerstellung " + timeRules + " Sek."); 
 		// ENDE REGELERSTELLUNG
 
-		// START ANWENDUNG REGELN AUF CORPUS
-		float [] freq = new float [rulesP0.size()+rulesP0m1.size()];
-		float [] succ = new float [rulesP0.size()+rulesP0m1.size()];
-		for (int i = 0; i < rulesP0.size()+rulesP0m1.size(); i++){
-			freq[i] = 0;
-			succ[i] = 0;
+		// START TEST REGELN AUF CORPUS
+		float [] frequP0 = new float [rulesP0.size()];
+		float [] succP0 = new float [rulesP0.size()];
+		for (int i = 0; i < rulesP0.size(); i++){
+			frequP0[i] = 0;
+			succP0[i] = 0;
 		}
 
-		// Anwendung der ersten Regeln 
+		float [] frequP0M1 = new float [rulesP0m1.size()];
+		float [] succP0M1 = new float [rulesP0m1.size()];
+		for (int i = 0; i < rulesP0m1.size(); i++){
+			frequP0M1[i] = 0;
+			succP0M1[i] = 0;
+		}
+
+		// Testen der Regeln 
 		final long timeStartFirstUse = System.currentTimeMillis();
+		PrintWriter printWriter2 = null;
+		try{
+			// Algorithmus zum Testen der erzeugten Regeln Position = 0
+			for (int i = 0; i< corpus_tagged.size()-500000; i++){ 
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tok1 = new Token (corpus_tagged.get(i));
+				String pos = tok1.getTag();
 
-		// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln an der Position 0
-		/*
-		 * Sollte man statt einer for-schleife über den Corpus zu iterieren, mit einem Iterator itereieren?
-		 */
-		for (int i = 0; i< corpus_tagged.size(); i++){
-			Token tok1 = new Token (corpus_tagged.get(i));
-			String pos = tok1.getTag();
+				Token tok2 = new Token (corpus_chunked.get(i));
+				String chunk = tok2.getCtag();
 
-			Token tok2 = new Token (corpus_chunked.get(i));
-			String chunk = tok2.getCtag();
+				for (int j = 0; j < rulesP0.size(); j++){
+					Rule rul1 = new Rule(rulesP0.get(j));
+					String rulpos = rul1.getPostag()[0];
+					String rulchunk = rul1.getChunktag();
 
-			for (int j = 0; j < rulesP0.size(); j++){
-				Rule rul1 = new Rule(rulesP0.get(j));
-				String rulpos = rul1.getPostag()[0];
-				String rulchunk = rul1.getChunktag();
-
-				if (pos.equals(rulpos)){
-					freq[j]++;
-					if (chunk.equals(rulchunk)){
-						succ[j]++;
+					if (pos.equals(rulpos)){
+						frequP0[j]++;
+						if (chunk.equals(rulchunk)){
+							succP0[j]++;
+						}
 					}
 				}
-				else{
+			}
+
+
+			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0
+			for (int i = 1; i< 200; i++){ 	
+				//			for (int i = 1; i < rulesP0m1.size()-500000; i++){
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tokp1 = new Token (corpus_tagged.get(i-1));
+				String pos1 = tokp1.getTag();
+				Token tokp2 = new Token (corpus_tagged.get(i));
+				String pos2 = tokp2.getTag();
+
+
+				Token tokc1 = new Token (corpus_chunked.get(i));
+				String chunk = tokc1.getCtag();
+
+				for (int m = 0; m < rulesP0m1.size(); m++){
+					Rule rul1 = new Rule(rulesP0m1.get(m));
+					String rulpos1 = rul1.getPostag()[0];
+					String rulpos2 = rul1.getPostag()[1];
+
+					String rulchunk = rul1.getChunktag();
+
+					if (pos1.equals(rulpos1) && pos2.equals(rulpos2)){
+						frequP0M1[m]++;
+						if (chunk.equals(rulchunk)){
+							succP0M1[m]++;
+						}
+					}
+					else{
+					}
 				}
 			}
 		}
-		// Dauer der Anwendung der ersten Regeln 
+		finally{
+			if ( printWriter2 != null ) {
+				printWriter2.close();
+			}
+		}
+		// Dauer der Tests der ersten Regeln 
 		final long timeEndFirstUse = System.currentTimeMillis(); 
 		final long timeFirstUse = (timeEndFirstUse - timeStartFirstUse)/1000;
 		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeFirstUse + " Sek."); 
-
-
-		
-
-//		// Algorithmus zur Anwendung der erzeugten Regeln mit Regeln an der Position -1,0
-//		final long timeStartSecondUse = System.currentTimeMillis();
-//		for (int i = 1; i< corpus_tagged.size()-1500000; i++){	// Start im Corpus an der Stelle 1, statt 0
-//			Token tokp1 = new Token (corpus_tagged.get(i));
-//			String pos1 = tokp1.getTag();
-//			Token tokp2 = new Token (corpus_tagged.get(i-1));	// vorheriges Token
-//			String pos2 = tokp2.getTag();
-//
-//			Token tokc1 = new Token (corpus_chunked.get(i));
-//			String chunk1 = tokc1.getCtag();
-//
-//			for (int j = 0; j < rulesP0m1.size(); j++){
-//				Rule rul1 = new Rule(rulesP0m1.get(j));
-//				String rulpos = rul1.getPostag()[0];
-//				Rule rul2 = new Rule(rulesP0m1.get(j));
-//				String rulpos2 = rul2.getPostag()[1];
-//
-//				String rulchunk = rul1.getChunktag();
-//
-//				if (pos1.equals(rulpos) && pos2.equals(rulpos2)){
-//					freq[j]++;
-//					if (chunk1.equals(rulchunk)){
-//						succ[j]++;
-//					}
-//				}
-//				else{
-//				}
-//			}
-//		}
-//		final long timeEndSecondUse = System.currentTimeMillis();
-//		final long timeSecondUse = (timeEndSecondUse - timeStartSecondUse)/1000;
-//		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeSecondUse + " Sek."); 
 
 
 		// Auswertung der Regeln auf ihre Frequenz und Genauigkeit
@@ -326,24 +332,23 @@ public class train_chunker {
 		PrintWriter printWriter3 = null;
 		try{
 			printWriter3 = new PrintWriter(auswertung);
-			// Regeln Position 0
 			for (int i = 0; i<rulesP0.size();i++){
-				if (freq[i]>0){
-					printWriter3.println(rulesP0.get(i)+"=> Freq: "+freq[i]+" Succ: "+succ[i]+" Acc: "+(succ[i]/freq[i])*100);
+				if (frequP0[i]>0){
+					printWriter3.println(rulesP0.get(i)+"=> Freq: "+frequP0[i]+" Succ: "+succP0[i]+" Acc: "+(succP0[i]/frequP0[i])*100);
 				}
 				else{
-					printWriter3.println(rulesP0.get(i)+"=> Freq: "+freq[i]+" Succ: "+succ[i]);
+					printWriter3.println(rulesP0.get(i)+"=> Freq: "+frequP0[i]+" Succ: "+succP0[i]);
 				}
 			}
-			// Regeln Position -1,0
-			for (int i = rulesP0.size(); i < rulesP0m1.size(); i++){
-				if (freq[i]>0){
-					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+freq[i]+" Succ: "+succ[i]+" Acc: "+(succ[i]/freq[i])*100);
+			for (int i = 0; i<rulesP0m1.size();i++){
+				if (frequP0M1[i]>0){
+					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+frequP0M1[i]+" Succ: "+succP0M1[i]+" Acc: "+(succP0M1[i]/frequP0M1[i])*100);
 				}
 				else{
-					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+freq[i]+" Succ: "+succ[i]);
+					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+frequP0M1[i]+" Succ: "+succP0M1[i]);
 				}
 			}
+
 		}catch (FileNotFoundException e){
 			e.printStackTrace();
 		}
@@ -358,24 +363,34 @@ public class train_chunker {
 		System.out.println("Dauer der Bewertung der Regeln: " + timeTesting + " Sek."); 
 
 		// Berechnung der Vollständigkeit und Genauigkeit aller Regeln
-		float summeFreq=0;
-		float summeSucc=0;
+		// Regeln mit der Position 0 
+		float summeFreqP0=0;
+		float summeSuccP0=0;
 
-		for (int p = 0; p< freq.length;p++){
-			summeFreq=summeFreq+freq[p];
-			summeSucc=summeSucc+succ[p];
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0=summeFreqP0+frequP0[p];
+			summeSuccP0=summeSuccP0+succP0[p];
 		}
-		float summeAcc=(summeSucc/summeFreq)*100;
-		System.out.println("Regeln an der Position 0\t Genauigkeit: "+summeAcc+" %");
+		float summeAccP0=(summeSuccP0/summeFreqP0)*100;
+		System.out.println("Regeln an der Position 0\t Genauigkeit: "+summeAccP0+" %");
 
-		// ENDE ANWENDUNG REGELN AUF CORPUS
+		// Regeln mit der Position -1,0
+		float summeFreqP0M1=0;
+		float summeSuccP0M1=0;
+
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0M1=summeFreqP0M1+frequP0M1[p];
+			summeSuccP0M1=summeSuccP0M1+succP0M1[p];
+		}
+		float summeAccP0M1=(summeSuccP0M1/summeFreqP0M1)*100;
+		System.out.println("Regeln an der Position -1,0\t Genauigkeit: "+summeAccP0M1+" %");
+
+		// ENDE TEST REGELN AUF CORPUS
 
 
 		final double timeEnd = System.currentTimeMillis(); 
 		final double time = ((timeEnd - timeStart)/1000)/60;
 		System.out.println("_________________________________________");
 		System.out.println("Dauer des Programms: " + time + " Min."); 
-		Date date2 = new Date();
-		System.out.println(date2.toString());
 	}
 }
