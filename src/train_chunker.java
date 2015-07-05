@@ -3,7 +3,7 @@
  * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
  * auch auf das Trainingskorpus angewendet.
  */
-
+//test
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
