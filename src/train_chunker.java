@@ -115,8 +115,14 @@ public class train_chunker {
 		 */
 		// Erstellung der Regeln an der Stelle: -1,0
 		for (int i=0; i< rulesP0.size();i++){
-			for (int j=0; j<postag.size();j++){
-				rulesP0m1.add("-1="+postag.get(j)+","+rulesP0.get(i));
+			Rule rul1 = new Rule (rulesP0.get(i));
+			String chunk = rul1.getChunktag();
+			if (chunk.equals("B-NC") || chunk.equals("B-VC") || chunk.equals("B-PC")){
+				
+			}else {
+				for (int j=0; j<postag.size();j++){
+					rulesP0m1.add("-1="+postag.get(j)+","+rulesP0.get(i));
+				}
 			}
 		}
 		System.out.println("Anzahl der Regeln -1,0: "+rulesP0m1.size());
@@ -131,10 +137,16 @@ public class train_chunker {
 
 		// Erstellung der Regeln an der Stelle: 0,1
 		for (int i=0; i< rulesP0.size();i++){
+			Rule rul1 = new Rule (rulesP0.get(i));
+			String chunk = rul1.getChunktag();
+			if (chunk.equals("B-NC") || chunk.equals("B-VC") || chunk.equals("B-PC")){
+				
+			}else {
 			String[] rulesP0split = new String [rulesP0.size()];	
 			rulesP0split=rulesP0.get(i).split("=>");
 			for (int j=0; j<postag.size();j++){
 				rulesP0p1.add(rulesP0split[0]+",1="+postag.get(j)+"=>"+rulesP0split[1]);
+			}
 			}
 		}
 		System.out.println("Anzahl der Regeln 0,1: "+rulesP0p1.size());
