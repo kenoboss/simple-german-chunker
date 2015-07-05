@@ -12,13 +12,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 public class train_chunker {
 
 	public static void main(String[] args) {
-
+		
+		Date date = new Date();
+		System.out.println(date.toString());
 		final double timeStart = System.currentTimeMillis();
 
 		//Alle Pfadangaben
@@ -178,8 +181,8 @@ public class train_chunker {
 //		}
 //		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
 
-
-
+		
+		// Summe aller Regeln
 		long anzahlrules = rulesP0.size()+rulesP0m1.size()+rulesP0m1m2.size()+rulesP0p1.size()+
 				rulesP0p1m1.size()+rulesP0p1p2.size()+rulesP0p1p2m1.size()+rulesP0p1p2m1m2.size()+
 				rulesP0p1m1m2.size();
@@ -392,5 +395,7 @@ public class train_chunker {
 		final double time = ((timeEnd - timeStart)/1000)/60;
 		System.out.println("_________________________________________");
 		System.out.println("Dauer des Programms: " + time + " Min."); 
+		Date date2 = new Date();
+		System.out.println(date2.toString());
 	}
 }
