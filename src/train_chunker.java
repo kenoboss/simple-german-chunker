@@ -19,7 +19,7 @@ import java.util.List;
 public class train_chunker {
 
 	public static void main(String[] args) {
-		
+
 		Date date = new Date();
 		System.out.println(date.toString());
 		final double timeStart = System.currentTimeMillis();
@@ -87,7 +87,7 @@ public class train_chunker {
 		/*Problem: Bei den folgenden Regeln werden mehrere 10 Millionen Regeln erstellt
 		 * Selbst mit 4096MB zugewiesenem Arbeitsspeicher dauert es mehrere Minuten zum 
 		 * Erstellen der Regeln. 
-		 * Daher wurde das Erstellen dieser Regeln auskommentiert. Zeile 127-149 und Zeile 184-192
+		 * Daher wurde das Erstellen dieser Regeln auskommentiert. Zeile 172-194
 		 */
 		List<String> rulesP0p1p2m1 = new ArrayList<String>();	// Regeln an der Stelle: -1,0,1,2		done
 		List<String> rulesP0p1m1m2 = new ArrayList<String>();	// Regeln an der Stelle: -2,-1,0,1		done
@@ -118,8 +118,8 @@ public class train_chunker {
 			Rule rul1 = new Rule (rulesP0.get(i));
 			String chunk = rul1.getChunktag();
 			if (chunk.equals("B-NC") || chunk.equals("B-VC") || chunk.equals("B-PC")){
-				
-			}else {
+			}
+			else {
 				for (int j=0; j<postag.size();j++){
 					rulesP0m1.add("-1="+postag.get(j)+","+rulesP0.get(i));
 				}
@@ -140,13 +140,13 @@ public class train_chunker {
 			Rule rul1 = new Rule (rulesP0.get(i));
 			String chunk = rul1.getChunktag();
 			if (chunk.equals("B-NC") || chunk.equals("B-VC") || chunk.equals("B-PC")){
-				
-			}else {
-			String[] rulesP0split = new String [rulesP0.size()];	
-			rulesP0split=rulesP0.get(i).split("=>");
-			for (int j=0; j<postag.size();j++){
-				rulesP0p1.add(rulesP0split[0]+",1="+postag.get(j)+"=>"+rulesP0split[1]);
 			}
+			else {
+				String[] rulesP0split = new String [rulesP0.size()];	
+				rulesP0split=rulesP0.get(i).split("=>");
+				for (int j=0; j<postag.size();j++){
+					rulesP0p1.add(rulesP0split[0]+",1="+postag.get(j)+"=>"+rulesP0split[1]);
+				}
 			}
 		}
 		System.out.println("Anzahl der Regeln 0,1: "+rulesP0p1.size());
@@ -193,7 +193,7 @@ public class train_chunker {
 //		}
 //		System.out.println("Anzahl der Regeln -2,-1,0,1,2: "+rulesP0p1p2m1m2.size());
 
-		
+
 		// Summe aller Regeln
 		long anzahlrules = rulesP0.size()+rulesP0m1.size()+rulesP0m1m2.size()+rulesP0p1.size()+
 				rulesP0p1m1.size()+rulesP0p1p2.size()+rulesP0p1p2m1.size()+rulesP0p1p2m1m2.size()+
@@ -208,15 +208,12 @@ public class train_chunker {
 			for (int i=0;i<rulesP0.size();i++){
 				printWriter.println(rulesP0.get(i));
 			}
-
 			for (int i=0;i<rulesP0m1.size();i++){
 				printWriter.println(rulesP0m1.get(i));
 			}
-
 			for (int i=0;i<rulesP0m1m2.size();i++){
 				printWriter.println(rulesP0m1m2.get(i));
 			}
-
 			for (int i=0;i<rulesP0p1.size();i++){
 				printWriter.println(rulesP0p1.get(i));
 			}
@@ -252,18 +249,52 @@ public class train_chunker {
 		// ENDE REGELERSTELLUNG
 
 		// START TEST REGELN AUF CORPUS
+		// Eval für Regeln der Positionen 0
 		float [] frequP0 = new float [rulesP0.size()];
 		float [] succP0 = new float [rulesP0.size()];
 		for (int i = 0; i < rulesP0.size(); i++){
 			frequP0[i] = 0;
 			succP0[i] = 0;
 		}
-
+		
+		// Eval für Regeln der Positionen -1,0
 		float [] frequP0M1 = new float [rulesP0m1.size()];
 		float [] succP0M1 = new float [rulesP0m1.size()];
 		for (int i = 0; i < rulesP0m1.size(); i++){
 			frequP0M1[i] = 0;
 			succP0M1[i] = 0;
+		}
+		
+		// Eval für Regeln der Positionen -2,-1,0
+		float [] frequP0M1M2 = new float [rulesP0m1m2.size()];
+		float [] succP0M1M2 = new float [rulesP0m1m2.size()];
+		for (int i = 0; i < rulesP0m1m2.size(); i++){
+			frequP0M1M2[i] = 0;
+			succP0M1M2[i] = 0;
+		}
+		
+		// Eval für Regeln der Positionen 0,1
+		float [] frequP0P1 = new float [rulesP0p1.size()];
+		float [] succP0P1 = new float [rulesP0p1.size()];
+		for (int i = 0; i < rulesP0m1.size(); i++){
+			frequP0P1[i] = 0;
+			succP0P1[i] = 0;
+		}
+		
+		// Eval für Regeln der Positionen -1,0,1
+		float [] frequP0P1M1 = new float [rulesP0p1m1.size()];
+		float [] succP0P1M1 = new float [rulesP0p1m1.size()];
+		for (int i = 0; i < rulesP0p1m1.size(); i++){
+			frequP0P1M1[i] = 0;
+			succP0P1M1[i] = 0;
+		}
+		
+		// Eval für Regeln der Positionen 0,1,2
+		float [] frequP0P1P2 = new float [rulesP0p1p2.size()];
+		float [] succP0P1P2 = new float [rulesP0p1p2.size()];
+		for (int i = 0; i < rulesP0p1p2.size(); i++){
+			frequP0P1P2[i] = 0;
+			succP0P1P2[i] = 0;
 		}
 
 		// Testen der Regeln 
@@ -299,7 +330,7 @@ public class train_chunker {
 
 			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0
 			for (int i = 1; i< 200; i++){ 	
-				//			for (int i = 1; i < rulesP0m1.size()-500000; i++){
+//			for (int i = 1; i < rulesP0m1.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
 				 * des Corpus. 
@@ -347,6 +378,7 @@ public class train_chunker {
 		PrintWriter printWriter3 = null;
 		try{
 			printWriter3 = new PrintWriter(auswertung);
+			// Eval der Regeln an den Positionen 0
 			for (int i = 0; i<rulesP0.size();i++){
 				if (frequP0[i]>0){
 					printWriter3.println(rulesP0.get(i)+"=> Freq: "+frequP0[i]+" Succ: "+succP0[i]+" Acc: "+(succP0[i]/frequP0[i])*100);
@@ -355,12 +387,49 @@ public class train_chunker {
 					printWriter3.println(rulesP0.get(i)+"=> Freq: "+frequP0[i]+" Succ: "+succP0[i]);
 				}
 			}
+			// Eval der Regeln an den Positionen -1,0
 			for (int i = 0; i<rulesP0m1.size();i++){
 				if (frequP0M1[i]>0){
 					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+frequP0M1[i]+" Succ: "+succP0M1[i]+" Acc: "+(succP0M1[i]/frequP0M1[i])*100);
 				}
 				else{
 					printWriter3.println(rulesP0m1.get(i)+"=> Freq: "+frequP0M1[i]+" Succ: "+succP0M1[i]);
+				}
+			}
+			// Eval für Regeln der Positionen -2,-1,0
+			for (int i = 0; i<rulesP0m1m2.size();i++){
+				if (frequP0M1M2[i]>0){
+					printWriter3.println(rulesP0m1m2.get(i)+"=> Freq: "+frequP0M1M2[i]+" Succ: "+succP0M1M2[i]+" Acc: "+(succP0M1M2[i]/frequP0M1M2[i])*100);
+				}
+				else{
+					printWriter3.println(rulesP0m1m2.get(i)+"=> Freq: "+frequP0M1M2[i]+" Succ: "+succP0M1M2[i]);
+				}
+			}
+			// Eval für Regeln der Positionen 0,1
+			for (int i = 0; i<rulesP0p1.size();i++){
+				if (frequP0P1[i]>0){
+					printWriter3.println(rulesP0p1.get(i)+"=> Freq: "+frequP0P1[i]+" Succ: "+succP0P1[i]+" Acc: "+(succP0P1[i]/frequP0P1[i])*100);
+				}
+				else{
+					printWriter3.println(rulesP0p1.get(i)+"=> Freq: "+frequP0P1[i]+" Succ: "+succP0P1[i]);
+				}
+			}
+			// Eval für Regeln der Positionen -1,0,1
+			for (int i = 0; i<rulesP0p1m1.size();i++){
+				if (frequP0P1M1[i]>0){
+					printWriter3.println(rulesP0p1m1.get(i)+"=> Freq: "+frequP0P1M1[i]+" Succ: "+succP0P1M1[i]+" Acc: "+(succP0P1M1[i]/frequP0P1M1[i])*100);
+				}
+				else{
+					printWriter3.println(rulesP0p1m1.get(i)+"=> Freq: "+frequP0P1M1[i]+" Succ: "+succP0P1M1[i]);
+				}
+			}
+			// Eval für Regeln der Positionen 0,1,2
+			for (int i = 0; i<rulesP0p1p2.size();i++){
+				if (frequP0P1P2[i]>0){
+					printWriter3.println(rulesP0p1p2.get(i)+"=> Freq: "+frequP0P1P2[i]+" Succ: "+succP0P1P2[i]+" Acc: "+(succP0P1P2[i]/frequP0P1P2[i])*100);
+				}
+				else{
+					printWriter3.println(rulesP0p1p2.get(i)+"=> Freq: "+frequP0P1P2[i]+" Succ: "+succP0P1P2[i]);
 				}
 			}
 
@@ -399,6 +468,50 @@ public class train_chunker {
 		}
 		float summeAccP0M1=(summeSuccP0M1/summeFreqP0M1)*100;
 		System.out.println("Regeln an der Position -1,0\t Genauigkeit: "+summeAccP0M1+" %");
+		
+		// Regeln mit der Position -2,-1,0
+		float summeFreqP0M1M2=0;
+		float summeSuccP0M1M2=0;
+
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0M1M2=summeFreqP0M1M2+frequP0M1M2[p];
+			summeSuccP0M1M2=summeSuccP0M1M2+succP0M1M2[p];
+		}
+		float summeAccP0M1M2=(summeSuccP0M1M2/summeFreqP0M1M2)*100;
+		System.out.println("Regeln an der Position -2,-1,0\t Genauigkeit: "+summeAccP0M1M2+" %");
+		
+		// Regeln mit der Position 0,1
+		float summeFreqP0P1=0;
+		float summeSuccP0P1=0;
+
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0P1=summeFreqP0P1+frequP0P1[p];
+			summeSuccP0P1=summeSuccP0P1+succP0P1[p];
+		}
+		float summeAccP0P1=(summeSuccP0P1/summeFreqP0P1)*100;
+		System.out.println("Regeln an der Position 0,1\t Genauigkeit: "+summeAccP0P1+" %");
+		
+		// Regeln mit der Position -1,0,1
+		float summeFreqP0P1M1=0;
+		float summeSuccP0P1M1=0;
+
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0P1M1=summeFreqP0P1M1+frequP0P1M1[p];
+			summeSuccP0P1M1=summeSuccP0P1M1+succP0P1M1[p];
+		}
+		float summeAccP0P1M1=(summeSuccP0P1M1/summeFreqP0P1M1)*100;
+		System.out.println("Regeln an der Position -1,0,1\t Genauigkeit: "+summeAccP0P1M1+" %");
+		
+		// Regeln mit der Position 0,1,2
+		float summeFreqP0P1P2=0;
+		float summeSuccP0P1P2=0;
+
+		for (int p = 0; p< frequP0.length;p++){
+			summeFreqP0P1P2=summeFreqP0P1P2+frequP0P1P2[p];
+			summeSuccP0P1P2=summeSuccP0P1P2+succP0P1P2[p];
+		}
+		float summeAccP0P1P2=(summeSuccP0P1P2/summeFreqP0P1P2)*100;
+		System.out.println("Regeln an der Position 0,1,2\t Genauigkeit: "+summeAccP0P1P2+" %");
 
 		// ENDE TEST REGELN AUF CORPUS
 
