@@ -256,7 +256,7 @@ public class train_chunker {
 			frequP0[i] = 0;
 			succP0[i] = 0;
 		}
-		
+
 		// Eval für Regeln der Positionen -1,0
 		float [] frequP0M1 = new float [rulesP0m1.size()];
 		float [] succP0M1 = new float [rulesP0m1.size()];
@@ -264,7 +264,7 @@ public class train_chunker {
 			frequP0M1[i] = 0;
 			succP0M1[i] = 0;
 		}
-		
+
 		// Eval für Regeln der Positionen -2,-1,0
 		float [] frequP0M1M2 = new float [rulesP0m1m2.size()];
 		float [] succP0M1M2 = new float [rulesP0m1m2.size()];
@@ -272,7 +272,7 @@ public class train_chunker {
 			frequP0M1M2[i] = 0;
 			succP0M1M2[i] = 0;
 		}
-		
+
 		// Eval für Regeln der Positionen 0,1
 		float [] frequP0P1 = new float [rulesP0p1.size()];
 		float [] succP0P1 = new float [rulesP0p1.size()];
@@ -280,7 +280,7 @@ public class train_chunker {
 			frequP0P1[i] = 0;
 			succP0P1[i] = 0;
 		}
-		
+
 		// Eval für Regeln der Positionen -1,0,1
 		float [] frequP0P1M1 = new float [rulesP0p1m1.size()];
 		float [] succP0P1M1 = new float [rulesP0p1m1.size()];
@@ -288,7 +288,7 @@ public class train_chunker {
 			frequP0P1M1[i] = 0;
 			succP0P1M1[i] = 0;
 		}
-		
+
 		// Eval für Regeln der Positionen 0,1,2
 		float [] frequP0P1P2 = new float [rulesP0p1p2.size()];
 		float [] succP0P1P2 = new float [rulesP0p1p2.size()];
@@ -349,16 +349,158 @@ public class train_chunker {
 					Rule rul1 = new Rule(rulesP0m1.get(m));
 					String rulpos1 = rul1.getPostag()[0];
 					String rulpos2 = rul1.getPostag()[1];
-					System.out.println(rul1.getPostag()[0]);
 
 					String rulchunk = rul1.getChunktag();
 
 					if (pos1.equals(rulpos1) && pos2.equals(rulpos2)){
 						frequP0M1[m]++;
-						System.out.println(frequP0M1[m]);
 						if (chunk.equals(rulchunk)){
 							succP0M1[m]++;
-							System.out.println(succP0M1[m]);
+						}
+					}
+					else{
+					}
+				}
+			}
+			
+			// Algorithmus zum Testen der erzeugten Regeln Position = -2,-1,0
+			for (int i = 2; i< 200; i++){ 	
+//			for (int i = 1; i < corpus_tagged.size()-500000; i++){
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tokp1 = new Token (corpus_tagged.get(i-2));
+				String pos1 = tokp1.getTag();
+				Token tokp2 = new Token (corpus_tagged.get(i-1));
+				String pos2 = tokp2.getTag();
+				Token tokp3 = new Token (corpus_tagged.get(i));
+				String pos3 = tokp3.getTag();
+
+
+				Token tokc1 = new Token (corpus_chunked.get(i));
+				String chunk = tokc1.getCtag();
+
+				for (int m = 0; m < rulesP0m1m2.size(); m++){
+					Rule rul1 = new Rule(rulesP0m1m2.get(m));
+					String rulpos1 = rul1.getPostag()[0];
+					String rulpos2 = rul1.getPostag()[1];
+					String rulpos3 = rul1.getPostag()[2];
+
+					String rulchunk = rul1.getChunktag();
+
+					if (pos1.equals(rulpos1) && pos2.equals(rulpos2) && pos3.equals(rulpos3)){
+						frequP0M1M2[m]++;
+						if (chunk.equals(rulchunk)){
+							succP0M1M2[m]++;
+						}
+					}
+					else{
+					}
+				}
+			}
+			
+			// Algorithmus zum Testen der erzeugten Regeln Position = 0,1
+			for (int i = 0; i< 200; i++){ 	
+//			for (int i = 1; i < corpus_tagged.size()-500000; i++){
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tokp1 = new Token (corpus_tagged.get(i));
+				String pos1 = tokp1.getTag();
+				Token tokp2 = new Token (corpus_tagged.get(i+1));
+				String pos2 = tokp2.getTag();
+
+
+				Token tokc1 = new Token (corpus_chunked.get(i));
+				String chunk = tokc1.getCtag();
+
+				for (int m = 0; m < rulesP0p1.size(); m++){
+					Rule rul1 = new Rule(rulesP0p1.get(m));
+					String rulpos1 = rul1.getPostag()[0];
+					String rulpos2 = rul1.getPostag()[1];
+
+					String rulchunk = rul1.getChunktag();
+
+					if (pos1.equals(rulpos1) && pos2.equals(rulpos2)){
+						frequP0P1[m]++;
+						if (chunk.equals(rulchunk)){
+							succP0P1[m]++;
+						}
+					}
+					else{
+					}
+				}
+			}
+			
+			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0,1
+			for (int i = 1; i< 200; i++){ 	
+//			for (int i = 1; i < corpus_tagged.size()-500000; i++){
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tokp1 = new Token (corpus_tagged.get(i-1));
+				String pos1 = tokp1.getTag();
+				Token tokp2 = new Token (corpus_tagged.get(i));
+				String pos2 = tokp2.getTag();
+				Token tokp3 = new Token (corpus_tagged.get(i+1));
+				String pos3 = tokp3.getTag();
+
+
+				Token tokc1 = new Token (corpus_chunked.get(i));
+				String chunk = tokc1.getCtag();
+
+				for (int m = 0; m < rulesP0p1m1.size(); m++){
+					Rule rul1 = new Rule(rulesP0p1m1.get(m));
+					String rulpos1 = rul1.getPostag()[0];
+					String rulpos2 = rul1.getPostag()[1];
+					String rulpos3 = rul1.getPostag()[2];
+
+					String rulchunk = rul1.getChunktag();
+
+					if (pos1.equals(rulpos1) && pos2.equals(rulpos2) && pos3.equals(rulpos3)){
+						frequP0P1M1[m]++;
+						if (chunk.equals(rulchunk)){
+							succP0P1M1[m]++;
+						}
+					}
+					else{
+					}
+				}
+			}
+			
+			// Algorithmus zum Testen der erzeugten Regeln Position = 0,1,2
+			for (int i = 0; i< 200; i++){ 	
+//			for (int i = 1; i < corpus_tagged.size()-500000; i++){
+				/*
+				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
+				 * des Corpus. 
+				 */
+				Token tokp1 = new Token (corpus_tagged.get(i));
+				String pos1 = tokp1.getTag();
+				Token tokp2 = new Token (corpus_tagged.get(i+1));
+				String pos2 = tokp2.getTag();
+				Token tokp3 = new Token (corpus_tagged.get(i+2));
+				String pos3 = tokp3.getTag();
+
+
+				Token tokc1 = new Token (corpus_chunked.get(i));
+				String chunk = tokc1.getCtag();
+
+				for (int m = 0; m < rulesP0p1p2.size(); m++){
+					Rule rul1 = new Rule(rulesP0p1p2.get(m));
+					String rulpos1 = rul1.getPostag()[0];
+					String rulpos2 = rul1.getPostag()[1];
+					String rulpos3 = rul1.getPostag()[2];
+
+					String rulchunk = rul1.getChunktag();
+
+					if (pos1.equals(rulpos1) && pos2.equals(rulpos2) && pos3.equals(rulpos3)){
+						frequP0P1P2[m]++;
+						if (chunk.equals(rulchunk)){
+							succP0P1P2[m]++;
 						}
 					}
 					else{
@@ -472,8 +614,9 @@ public class train_chunker {
 		}
 		float summeAccP0M1=(summeSuccP0M1/summeFreqP0M1)*100;
 		System.out.println("Regeln an der Position -1,0\t Genauigkeit: "+summeAccP0M1+" %");
-		
+
 		// Regeln mit der Position -2,-1,0
+		//funktioniert nicht
 		float summeFreqP0M1M2=0;
 		float summeSuccP0M1M2=0;
 
@@ -483,7 +626,7 @@ public class train_chunker {
 		}
 		float summeAccP0M1M2=(summeSuccP0M1M2/summeFreqP0M1M2)*100;
 		System.out.println("Regeln an der Position -2,-1,0\t Genauigkeit: "+summeAccP0M1M2+" %");
-		
+
 		// Regeln mit der Position 0,1
 		float summeFreqP0P1=0;
 		float summeSuccP0P1=0;
@@ -494,7 +637,7 @@ public class train_chunker {
 		}
 		float summeAccP0P1=(summeSuccP0P1/summeFreqP0P1)*100;
 		System.out.println("Regeln an der Position 0,1\t Genauigkeit: "+summeAccP0P1+" %");
-		
+
 		// Regeln mit der Position -1,0,1
 		float summeFreqP0P1M1=0;
 		float summeSuccP0P1M1=0;
@@ -505,7 +648,7 @@ public class train_chunker {
 		}
 		float summeAccP0P1M1=(summeSuccP0P1M1/summeFreqP0P1M1)*100;
 		System.out.println("Regeln an der Position -1,0,1\t Genauigkeit: "+summeAccP0P1M1+" %");
-		
+
 		// Regeln mit der Position 0,1,2
 		float summeFreqP0P1P2=0;
 		float summeSuccP0P1P2=0;
