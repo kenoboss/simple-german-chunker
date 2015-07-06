@@ -87,7 +87,7 @@ public class train_chunker {
 		/*Problem: Bei den folgenden Regeln werden mehrere 10 Millionen Regeln erstellt
 		 * Selbst mit 4096MB zugewiesenem Arbeitsspeicher dauert es mehrere Minuten zum 
 		 * Erstellen der Regeln. 
-		 * Daher wurde das Erstellen dieser Regeln auskommentiert. Zeile 172-194
+		 * Daher wurde das Erstellen dieser Regeln auskommentiert.
 		 */
 		List<String> rulesP0p1p2m1 = new ArrayList<String>();	// Regeln an der Stelle: -1,0,1,2		done
 		List<String> rulesP0p1m1m2 = new ArrayList<String>();	// Regeln an der Stelle: -2,-1,0,1		done
@@ -276,7 +276,7 @@ public class train_chunker {
 		// Eval für Regeln der Positionen 0,1
 		float [] frequP0P1 = new float [rulesP0p1.size()];
 		float [] succP0P1 = new float [rulesP0p1.size()];
-		for (int i = 0; i < rulesP0m1.size(); i++){
+		for (int i = 0; i < rulesP0p1.size(); i++){
 			frequP0P1[i] = 0;
 			succP0P1[i] = 0;
 		}
@@ -302,7 +302,8 @@ public class train_chunker {
 		PrintWriter printWriter2 = null;
 		try{
 			// Algorithmus zum Testen der erzeugten Regeln Position = 0
-			for (int i = 0; i< corpus_tagged.size()-500000; i++){ 
+			for (int i = 0; i< 200; i++){ 
+//			for (int i = 0; i< corpus_tagged.size()-500000; i++){ 
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
 				 * des Corpus. 
@@ -330,7 +331,7 @@ public class train_chunker {
 
 			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0
 			for (int i = 1; i< 200; i++){ 	
-//			for (int i = 1; i < rulesP0m1.size()-500000; i++){
+//			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
 				 * des Corpus. 
@@ -348,13 +349,16 @@ public class train_chunker {
 					Rule rul1 = new Rule(rulesP0m1.get(m));
 					String rulpos1 = rul1.getPostag()[0];
 					String rulpos2 = rul1.getPostag()[1];
+					System.out.println(rul1.getPostag()[0]);
 
 					String rulchunk = rul1.getChunktag();
 
 					if (pos1.equals(rulpos1) && pos2.equals(rulpos2)){
 						frequP0M1[m]++;
+						System.out.println(frequP0M1[m]);
 						if (chunk.equals(rulchunk)){
 							succP0M1[m]++;
+							System.out.println(succP0M1[m]);
 						}
 					}
 					else{
