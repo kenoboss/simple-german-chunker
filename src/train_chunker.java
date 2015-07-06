@@ -301,8 +301,13 @@ public class train_chunker {
 		final long timeStartFirstUse = System.currentTimeMillis();
 		PrintWriter printWriter2 = null;
 		try{
+			long trainsize = corpus_tagged.size()-1570000;
+			System.out.println("Trainsize: "+trainsize);
+			
+			
 			// Algorithmus zum Testen der erzeugten Regeln Position = 0
-			for (int i = 0; i< 200; i++){ 
+			final double timeStartRunOne = System.currentTimeMillis();
+			for (int i = 0; i< trainsize; i++){ 
 //			for (int i = 0; i< corpus_tagged.size()-500000; i++){ 
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -327,10 +332,14 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunOne = System.currentTimeMillis();
+			final double timeRunOne = ((timeEndRunOne - timeStartRunOne)/1000)/60;
+			System.out.println("Dauer Run One: " + timeRunOne + " Min."); 
 
 
 			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0
-			for (int i = 1; i< 200; i++){ 	
+			final double timeStartRunTwo = System.currentTimeMillis();
+			for (int i = 1; i< trainsize; i++){ 	
 //			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -362,9 +371,13 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunTwo = System.currentTimeMillis();
+			final double timeRunTwo =((timeEndRunTwo - timeStartRunTwo)/1000)/60;
+			System.out.println("Dauer Run Two: " + timeRunTwo + " Min."); 
 			
 			// Algorithmus zum Testen der erzeugten Regeln Position = -2,-1,0
-			for (int i = 2; i< 200; i++){ 	
+			final double timeStartRunThree = System.currentTimeMillis();
+			for (int i = 2; i< trainsize; i++){ 	
 //			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -399,9 +412,13 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunThree = System.currentTimeMillis();
+			final double timeRunThree = ((timeEndRunThree - timeStartRunThree)/1000)/60;
+			System.out.println("Dauer Run Three: " + timeRunThree + " Min."); 
 			
 			// Algorithmus zum Testen der erzeugten Regeln Position = 0,1
-			for (int i = 0; i< 200; i++){ 	
+			final double timeStartRunFour = System.currentTimeMillis();
+			for (int i = 0; i< trainsize; i++){ 	
 //			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -433,9 +450,13 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunFour = System.currentTimeMillis();
+			final double timeRunFour = ((timeEndRunFour - timeStartRunFour)/1000)/60;
+			System.out.println("Dauer Run Four: " + timeRunFour + " Min."); 
 			
 			// Algorithmus zum Testen der erzeugten Regeln Position = -1,0,1
-			for (int i = 1; i< 200; i++){ 	
+			final double timeStartRunFive = System.currentTimeMillis();
+			for (int i = 1; i< trainsize; i++){ 	
 //			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -470,9 +491,13 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunFive = System.currentTimeMillis();
+			final double timeRunFive = ((timeEndRunFive - timeStartRunFive)/1000)/60;
+			System.out.println("Dauer Run Five: " + timeRunFive + " Min."); 
 			
 			// Algorithmus zum Testen der erzeugten Regeln Position = 0,1,2
-			for (int i = 0; i< 200; i++){ 	
+			final double timeStartRunSix = System.currentTimeMillis();
+			for (int i = 0; i< trainsize; i++){ 	
 //			for (int i = 1; i < corpus_tagged.size()-500000; i++){
 				/*
 				 * Regeln sollten nicht auf den kompletten Korpus angewendet werden, eher auf 2/3 
@@ -507,6 +532,9 @@ public class train_chunker {
 					}
 				}
 			}
+			final double timeEndRunSix = System.currentTimeMillis();
+			final double timeRunSix = ((timeEndRunSix - timeStartRunSix)/1000)/60;
+			System.out.println("Dauer Run Six: " + timeRunSix + " Min."); 
 		}
 		finally{
 			if ( printWriter2 != null ) {
@@ -516,7 +544,7 @@ public class train_chunker {
 		// Dauer der Tests der ersten Regeln 
 		final long timeEndFirstUse = System.currentTimeMillis(); 
 		final long timeFirstUse = (timeEndFirstUse - timeStartFirstUse)/1000;
-		System.out.println("Dauer des ersten Durchlaufes der Regeln: " + timeFirstUse + " Sek."); 
+		System.out.println("Dauer des Trainings der Regeln: " + timeFirstUse + " Sek."); 
 
 
 		// Auswertung der Regeln auf ihre Frequenz und Genauigkeit
