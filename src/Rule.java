@@ -9,12 +9,12 @@ public class Rule {
 	public Rule(String text) {
 		String [] rule = text.split("=>");
 		this.chunktag = rule[1];
-		//		if (rule[2] != null){
-		//			String [] eval = rule[2].split("Acc: ");
-		//			this.accuracy = eval[1];
-		//		}
+//		if (rule[2] != null){
+//			String [] eval = rule[2].split("Acc: ");
+//			this.accuracy = eval[1];
+//		}
 
-		String [] headrule = rule[0].split(",");
+		String [] headrule = rule[0].split(";");
 		for (int i = 0; i < headrule.length; i++) {
 			String [] diffrule = headrule[i].split("=");
 			this.position[i] = diffrule[0];
@@ -35,9 +35,9 @@ public class Rule {
 		this.chunktag = chunktag;
 	}
 
-	//	public void setAccuracy(String token) {
-	//		this.accuracy = accuracy;
-	//	}
+//	public void setAccuracy(String token) {
+//		this.accuracy = accuracy;
+//	}
 
 	public String [] getPosition() {
 		return position;
@@ -51,9 +51,9 @@ public class Rule {
 		return chunktag;
 	}
 
-	//	public String getArruracy() {
-	//		return accuracy;
-	//	}
+//	public String getArruracy() {
+//		return accuracy;
+//	}
 
 
 }
