@@ -37,8 +37,7 @@ public class train_chunker {
 		List<String> corpus_tagged = new ArrayList<String>();
 		List<String> postag = new ArrayList<String>();
 		
-		// Groesse des Trainingscorpus
-		long trainsize = corpus_tagged.size()-corpus_tagged.size()+100;
+		
 		
 
 		// START EINLESEN
@@ -77,7 +76,9 @@ public class train_chunker {
 		final long timeReading = (timeEndReading - timeStartReading)/1000;
 		System.out.println("Dauer des Einlesens: " + timeReading + " Sek."); 
 		// ENDE EINLESEN
-
+		
+		// Groesse des Trainingscorpus
+		long trainsize = corpus_tagged.size()-500000;
 
 		// START REGELERSTELLUNG
 		final long timeStartRules = System.currentTimeMillis(); 
@@ -310,8 +311,9 @@ public class train_chunker {
 		for (int temp = 0; temp < postag.size(); temp++) {
 					id3 [temp] = 18150*temp;
 		}
-
-		System.out.println("Anzahl der Tokens: \t\t"+trainsize);
+		
+		System.out.println("Corpusgroesse: \t\t"+corpus_tagged.size());
+		System.out.println("Trainingscorpus: \t\t"+trainsize);
 		
 		// Testen der Regeln 
 		final long timeStartFirstUse = System.currentTimeMillis();
