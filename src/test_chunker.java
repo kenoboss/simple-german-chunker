@@ -76,34 +76,36 @@ public class test_chunker {
 		
 		// Groeße zum Testen: 1074818 + 500000
 		
-		// Regeln auslesen, die ACC > 0 haben
+		List<String> lengthone = new ArrayList <String>();
+		List<String> lengthtwo = new ArrayList <String>();
+		List<String> lengththree = new ArrayList <String>();
+		
 		for (int i = 0; i < rules.size(); i++){
-			Rule rul1 = new Rule (rules.get(i));
-			String acc1 = rul1.getArruracy(); //Muss noch in Rule.java implementiert werden
-			double acc2 = Double.parseDouble(acc1);
-			if ( acc2 > 0 ){
-				trained_rules.add(rul1.toString());
+			//Regeln der Laenge 1
+			if (i < 330){
+				lengthone.add(rules.get(i));
+			}
+			//Regeln der Laenge 2
+			if (i > 330 && i <= 18150*2){
+				lengthtwo.add(rules.get(i));
+			}
+			//Regeln der Laenge 3 
+			if (i > 18150*2){
+				lengththree.add(rules.get(i));
 			}
 		}
 		
-		// trainierte Regeln in trained_rules.txt schreiben
-		PrintWriter printWriter = null;
-		try {
-			printWriter = new PrintWriter(rules_trainedtxt);
+		System.out.println(lengthone.size());
+		System.out.println(lengthtwo.size());
+		System.out.println(lengththree.size());
+		
+		
+		
+		for (int i = 1074818; i < corpus_tagged.size(); i++){
+			
+		}
 
-			for (int i=0;i<trained_rules.size();i++){
-				printWriter.println(trained_rules.get(i));
-			}
-		}catch (FileNotFoundException e){
-			e.printStackTrace();
-		}
-		finally{
-			if ( printWriter != null ) {
-				printWriter.close();
-			}
-		}
 		
-		// Anwendung der Regeln für den Test
 		
 		
 

@@ -4,15 +4,15 @@ public class Rule {
 	private String [] position = new String [5];
 	private String [] postag = new String [5];
 	private String chunktag;
-	//	private String accuracy;
+	private String accuracy;
 
 	public Rule(String text) {
 		String [] rule = text.split("=>");
 		this.chunktag = rule[1];
-//		if (rule[2] != null){
-//			String [] eval = rule[2].split("Acc: ");
-//			this.accuracy = eval[1];
-//		}
+		if (rule.length == 3){
+			String [] eval = rule[2].split("Acc: ");
+			this.accuracy = eval[eval.length-1];
+		}
 
 		String [] headrule = rule[0].split(";");
 		for (int i = 0; i < headrule.length; i++) {
@@ -35,9 +35,9 @@ public class Rule {
 		this.chunktag = chunktag;
 	}
 
-//	public void setAccuracy(String token) {
-//		this.accuracy = accuracy;
-//	}
+	public void setAccuracy(String token) {
+		this.accuracy = accuracy;
+	}
 
 	public String [] getPosition() {
 		return position;
@@ -51,9 +51,9 @@ public class Rule {
 		return chunktag;
 	}
 
-//	public String getArruracy() {
-//		return accuracy;
-//	}
+	public String getArruracy() {
+		return accuracy;
+	}
 
 
 }
