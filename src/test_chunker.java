@@ -81,16 +81,19 @@ public class test_chunker {
 		List<String> lengththree = new ArrayList <String>();
 		
 		for (int i = 0; i < rules.size(); i++){
+			Rule rul1 = new Rule (rules.get(i));
+			String accs = rul1.getArruracy();
+			double acc = Double.parseDouble(accs); 
 			//Regeln der Laenge 1
-			if (i < 330){
+			if (i < 330 && acc > 0.0){
 				lengthone.add(rules.get(i));
 			}
 			//Regeln der Laenge 2
-			if (i > 330 && i <= 18150*2){
+			if (i > 330 && i <= 18150*2 && acc > 0.0){
 				lengthtwo.add(rules.get(i));
 			}
 			//Regeln der Laenge 3 
-			if (i > 18150*2){
+			if (i > 18150*2 && acc > 0.0){
 				lengththree.add(rules.get(i));
 			}
 		}
@@ -98,15 +101,7 @@ public class test_chunker {
 		System.out.println(lengthone.size());
 		System.out.println(lengthtwo.size());
 		System.out.println(lengththree.size());
-		
-		
-		
-		for (int i = 1074818; i < corpus_tagged.size(); i++){
-			
-		}
 
-		
-		
 		
 
 	}
