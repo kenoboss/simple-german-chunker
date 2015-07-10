@@ -145,7 +145,7 @@ public class test_chunker {
 		System.out.println("Anzahl der Regeln an den Positionen 0,1,2:\t"+P0P1P2.size());
 		System.out.print("Summe aller Regeln: \t\t\t\t");
 		System.out.println(P0.size()+P0M1.size()+P0P1.size()+P0M2M1.size()+P0M1P1.size()+P0P1P2.size());
-		
+
 		// getestete Regeln werden in rules_tested.txt geschrieben
 		PrintWriter printWriter = null;
 		try {
@@ -162,9 +162,9 @@ public class test_chunker {
 				printWriter.close();
 			}
 		}
-		
-		
-		
+
+
+
 		//Chunking-Algorithmus
 		/*
 		 * Regel-Reihenfolge:
@@ -311,9 +311,30 @@ public class test_chunker {
 				//Hinzufügen des Tokens mit dem neu erworbennen CTag
 				corpus_tagged_new.add(corpus_tagged.get(i)+"_"+ctagF);
 			}
+			// Regelmaessige Ausgabe der Zeit (Schritt: 100.000)
+			if (i == 1074818+100000){
+				Date date2 = new Date();
+				System.out.println(date2.toString());
+			}
+			else if (i == 1074818+100000+100000){
+				Date date3 = new Date();
+				System.out.println(date3.toString());
+			}
+			else if (i == 1074818+100000+100000+100000){
+				Date date4 = new Date();
+				System.out.println(date4.toString());
+			}
+			else if (i == 1074818+100000+100000+100000+100000){
+				Date date5 = new Date();
+				System.out.println(date5.toString());
+			}
+			else if (i == 1074818+100000+100000+100000+100000+100000){
+				Date date6 = new Date();
+				System.out.println(date6.toString());
+			}
 		}
 		System.out.println("Groesse von dem gechunkten Corpus: "+corpus_tagged_new.size());
-		
+
 		//getesteter Corpus wird in tested_corpus.txt geschrieben
 		PrintWriter printWriter2 = null;
 		try {
@@ -352,7 +373,7 @@ public class test_chunker {
 		System.out.println("Dauer des Chunkings: "+timeChunking+" Min.");
 		System.out.println("________ENDE CHUNKING_______");
 
-		
+
 		double accall = succ/freq;
 		System.out.println("Genauigkeit: "+accall*100);
 
