@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class test_chunker {
+public class chunker {
 
 	public static void main(String[] args) {
 
@@ -94,7 +94,6 @@ public class test_chunker {
 		List<String> corpus_tagged_new = new ArrayList<String>();
 
 		double grenze1 = 80.0;
-		// Auslesen der trainierten ACC und Regeln aus rules.txt
 		for (int i = 0; i < rules.size(); i++){
 			Rule rul1 = new Rule (rules.get(i));
 			String accs = rul1.getArruracy();
@@ -146,7 +145,7 @@ public class test_chunker {
 		System.out.println("Anzahl der Regeln an den Positionen 0,1,2:\t"+P0P1P2.size());
 		System.out.print("Summe aller Regeln: \t\t\t\t");
 		System.out.println(P0.size()+P0M1.size()+P0P1.size()+P0M2M1.size()+P0M1P1.size()+P0P1P2.size());
-
+		
 		// getestete Regeln werden in rules_tested.txt geschrieben
 		PrintWriter printWriter = null;
 		try {
@@ -163,9 +162,9 @@ public class test_chunker {
 				printWriter.close();
 			}
 		}
-
-
-
+		
+		
+		
 		//Chunking-Algorithmus
 		/*
 		 * Regel-Reihenfolge:
@@ -178,10 +177,9 @@ public class test_chunker {
 		 * 6. 0
 		 */
 		System.out.println("_______START CHUNKING_______");
-//		int start = 1574618;
 		int start = 1074818;
 		final double timeChunkingStart = System.currentTimeMillis(); 
-		int freq1 = 0;
+		//		for (int i = 1074818; i < corpus_tagged.size(); i++) {
 		for (int i = start; i < corpus_tagged.size(); i++) {
 			//Erstellung der POS-Tags für die aktuelle Position im Korpus
 			Token tokM2 = new Token (corpus_tagged.get(i-2));
@@ -308,16 +306,14 @@ public class test_chunker {
 			else {
 			}
 			if (ctagF == ""){
-				corpus_tagged_new.add(corpus_tagged.get(i));
 			}
 			else {
 				//Hinzufügen des Tokens mit dem neu erworbennen CTag
 				corpus_tagged_new.add(corpus_tagged.get(i)+"_"+ctagF);
-				freq1++;
 			}
 		}
 		System.out.println("Groesse von dem gechunkten Corpus: "+corpus_tagged_new.size());
-
+		
 		//getesteter Corpus wird in tested_corpus.txt geschrieben
 		PrintWriter printWriter2 = null;
 		try {
@@ -336,9 +332,8 @@ public class test_chunker {
 		}
 
 		//Auswertung
-		// fehlerhalft
 		double succ = 0 ;
-		double freq2 = 0;
+		double freq = 0;
 
 		for (int i = 0; i < corpus_tagged_new.size(); i++){
 			Token tok1 = new Token (corpus_tagged_new.get(i));
@@ -346,7 +341,7 @@ public class test_chunker {
 
 			Token tok2 = new Token (corpus_chunked.get(start+i));
 			String ctagc = tok2.getCtag();
-			freq2++;
+			freq++;
 			if (ctagt.equals(ctagc)){
 				succ++;
 			}
@@ -357,11 +352,9 @@ public class test_chunker {
 		System.out.println("Dauer des Chunkings: "+timeChunking+" Min.");
 		System.out.println("________ENDE CHUNKING_______");
 
-		// fehlerhalft
-		double accall = succ/freq1;
+		
+		double accall = succ/freq;
 		System.out.println("Genauigkeit: "+accall*100);
-		double recall = freq1/freq2;
-		System.out.println("Vollständigkeit: "+recall*100);
 
 
 		final double timeEnd = System.currentTimeMillis();

@@ -57,14 +57,6 @@ public class reading_xml {
 							
 							//writing the word into a new .txt file
 							writer.println(eElement.getAttribute("word"));
-//							writer.print("_");
-//							writer.print(eElement.getAttribute("pos"));
-//							writer.print("_");
-//							writer.print(temp);
-//							writer.print("_");
-//							writer.println(eElement.getAttribute("lemma"));
-//							writer.print("_");
-//							writer.println("BN");
 							
 							
 
@@ -85,4 +77,4 @@ public class reading_xml {
 
 }
 
-// Alle Pfadangaben müssen an das eigene Verzeichnis angepasst werden.
+// Alle Pfadangaben muessen an das eigene Verzeichnis angepasst werden.

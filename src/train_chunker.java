@@ -78,7 +78,7 @@ public class train_chunker {
 		// ENDE EINLESEN
 		
 		// Groesse des Trainingscorpus
-		long trainsize = corpus_tagged.size()-1570000;
+		long trainsize = corpus_tagged.size()-500000;
 
 		// START REGELERSTELLUNG
 		final long timeStartRules = System.currentTimeMillis(); 
