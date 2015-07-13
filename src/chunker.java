@@ -18,6 +18,7 @@ public class chunker  {
 
 	public static void main(String[] args) {
 
+		System.out.println("START");
 		//POS-TAGGER
 		//Pfadangabe
 		File text = new File ("text.txt"); 										//unbearbeitete Eingabe
@@ -25,7 +26,7 @@ public class chunker  {
 
 		List<String> unbearbeitet = new ArrayList<String>();
 		List<String> input = new ArrayList<String>();
-
+		
 		try {
 			String line = null;
 
@@ -46,7 +47,7 @@ public class chunker  {
 		}
 		String tagged = tagger.tagString(text_unbearbeitet);
 		String [] split_tagged = tagged.split(" ");
-
+		
 		for (int i = 0; i < split_tagged.length; i++) {
 			input.add(split_tagged[i]+"_"+i);
 		}
@@ -94,7 +95,7 @@ public class chunker  {
 		List<Double> accP0P1P2 = new ArrayList <Double>();
 
 		//Setzen des Grenzwertes fuer die Acc der trainierten Regeln
-		double grenze1 = 80.0;
+		double grenze1 = 50.0;
 		// Auslesen der trainierten ACC und Regeln aus rules.txt
 		for (int i = 0; i < rules.size(); i++){
 			Rule rul1 = new Rule (rules.get(i));
@@ -145,10 +146,23 @@ public class chunker  {
 		 */
 		int start = 0;
 		for (int i = start; i < input.size(); i++) {
-			Token tokM2 = new Token (input.get(i-2));
-			String posM2 = tokM2.getTag();
-			Token tokM1 = new Token (input.get(i-1));
-			String posM1 = tokM1.getTag();
+			String posM2 = "";
+			String posM1 = "";
+			if (i < 2){
+				
+			}
+			else {
+				Token tokM2 = new Token (input.get(i-2));
+				posM2 = tokM2.getTag();
+			}
+			if (i < 1){
+				
+			}
+			else {
+				Token tokM1 = new Token (input.get(i-1));
+				posM1 = tokM1.getTag();
+			}
+
 			Token tokP0 = new Token (input.get(i));
 			String posP0 = tokP0.getTag();
 			String posP1 = "";
@@ -295,5 +309,6 @@ public class chunker  {
 			}
 
 		}
+		System.out.println("END");
 	}
 }
