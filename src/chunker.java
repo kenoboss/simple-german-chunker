@@ -12,17 +12,53 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+
 public class chunker  {
 
 	public static void main(String[] args) {
 
+		//POS-TAGGER
+		//Pfadangabe
+		File text = new File ("text.txt"); 										//unbearbeitete Eingabe
+		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");	//verwendeter POS-Tagger
+
+		List<String> unbearbeitet = new ArrayList<String>();
+		List<String> input = new ArrayList<String>();
+
+		try {
+			String line = null;
+
+			BufferedReader inut  = new BufferedReader(new InputStreamReader(new FileInputStream (text), "UTF8"));			
+			while (( line = inut.readLine()) != null) {
+				unbearbeitet.add(line);
+			}
+			inut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();  
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String text_unbearbeitet = "";
+		for (int i = 0; i < unbearbeitet.size(); i++){
+			text_unbearbeitet = text_unbearbeitet.concat(unbearbeitet.get(i));
+		}
+		String tagged = tagger.tagString(text_unbearbeitet);
+		String [] split_tagged = tagged.split(" ");
+
+		for (int i = 0; i < split_tagged.length; i++) {
+			input.add(split_tagged[i]+"_"+i);
+		}
+
+
+		// CHUNKER
 		// Pfadangaben
 		File rules_file = new File ("results/regel_auswertung.txt"); 	// Regeln
-		File inputtext = new File("results/input.txt");					// Eingabetext mit POS-Tags
 		File outputtext = new File("results/output.txt");				// Ausgabetext mit Chunks
 
+
 		List<String> rules = new ArrayList<String>();
-		List<String> input = new ArrayList<String>();
 		List<String> output = new ArrayList<String>();
 
 		//Einlesen der Regeln und des Eingabe
@@ -35,13 +71,6 @@ public class chunker  {
 				rules.add(line);
 			}
 			inrf.close();
-
-			//Einlesen der Eingabe
-			BufferedReader intxt  = new BufferedReader(new InputStreamReader(new FileInputStream (inputtext), "UTF8"));			
-			while (( line = intxt.readLine()) != null) {
-				input.add(line);
-			}
-			intxt.close();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();  
