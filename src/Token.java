@@ -8,13 +8,25 @@ public class Token {
 	private String lemma;
 
 	public Token(String text) {
+//		String [] wort = text.split("_");
+//		this.token = wort[0];
+//		this.tag = wort[1];
+//		this.lemma = wort[2];
+//		this.id = wort[3];
+//		if (wort.length > 4){
+//			this.ctag = wort[4];
+//		}
+//		else{
+//			this.ctag = "";
+//		}
+//	}
+		
 		String [] wort = text.split("_");
 		this.token = wort[0];
 		this.tag = wort[1];
-		this.lemma = wort[2];
-		this.id = wort[3];
-		if (wort.length > 4){
-			this.ctag = wort[4];
+		this.id = wort[2];
+		if (wort.length > 3){
+			this.ctag = wort[3];
 		}
 		else{
 			this.ctag = "";
