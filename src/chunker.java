@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class chunker  {
@@ -19,13 +19,14 @@ public class chunker  {
 	public static void main(String[] args) {
 
 		System.out.println("START");
-		//POS-TAGGER
+		//POS-TAGGER (Stanford POS-Tagger)
 		//Pfadangabe
-		File text = new File ("text.txt"); 										//unbearbeitete Eingabe
+	    File text = new File ("input.txt"); 									//unbearbeitete Eingabe
 		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");	//verwendeter POS-Tagger
 
 		List<String> unbearbeitet = new ArrayList<String>();
 		List<String> input = new ArrayList<String>();
+		
 		
 		try {
 			String line = null;
@@ -46,7 +47,9 @@ public class chunker  {
 			text_unbearbeitet = text_unbearbeitet.concat(unbearbeitet.get(i));
 		}
 		String tagged = tagger.tagString(text_unbearbeitet);
+		
 		String [] split_tagged = tagged.split(" ");
+		
 		
 		for (int i = 0; i < split_tagged.length; i++) {
 			input.add(split_tagged[i]+"_"+i);
@@ -56,7 +59,7 @@ public class chunker  {
 		// CHUNKER
 		// Pfadangaben
 		File rules_file = new File ("results/regel_auswertung.txt"); 	// Regeln
-		File outputtext = new File("results/output.txt");				// Ausgabetext mit Chunks
+		File outputtext = new File ("output.txt");						// Ausgabetext mit Chunks
 
 
 		List<String> rules = new ArrayList<String>();
@@ -167,19 +170,19 @@ public class chunker  {
 			String posP0 = tokP0.getTag();
 			String posP1 = "";
 			String posP2 = "";
-
-			if (i >= input.size()-1) {
-			}
-			else {
-				Token tokP1 = new Token (input.get(i+1));
-				posP1 = tokP1.getTag();
-			}
 			if (i >= input.size()-2) {
 			}
 			else {
 				Token tokP2 = new Token (input.get(i+2));
 				posP2 = tokP2.getTag();
 			}
+			if (i >= input.size()-1) {
+			}
+			else {
+				Token tokP1 = new Token (input.get(i+1));
+				posP1 = tokP1.getTag();
+			}
+			
 			String ctagF = "";
 			double accF = 0.0;
 			double grenze2 = grenze1;

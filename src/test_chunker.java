@@ -178,10 +178,9 @@ public class test_chunker {
 		 * 6. 0
 		 */
 		System.out.println("_______START CHUNKING_______");
-//		int start = 1574618;
-		int start = 1074818;
+		int start = 1574418;
+//		int start = 1074818;
 		final double timeChunkingStart = System.currentTimeMillis(); 
-		int freq1 = 0;
 		for (int i = start; i < corpus_tagged.size(); i++) {
 			//Erstellung der POS-Tags für die aktuelle Position im Korpus
 			Token tokM2 = new Token (corpus_tagged.get(i-2));
@@ -313,7 +312,6 @@ public class test_chunker {
 			else {
 				//Hinzufügen des Tokens mit dem neu erworbennen CTag
 				corpus_tagged_new.add(corpus_tagged.get(i)+"_"+ctagF);
-				freq1++;
 			}
 		}
 		System.out.println("Groesse von dem gechunkten Corpus: "+corpus_tagged_new.size());
@@ -338,7 +336,7 @@ public class test_chunker {
 		//Auswertung
 		// fehlerhalft
 		double succ = 0 ;
-		double freq2 = 0;
+		double freq = 0;
 
 		for (int i = 0; i < corpus_tagged_new.size(); i++){
 			Token tok1 = new Token (corpus_tagged_new.get(i));
@@ -346,7 +344,7 @@ public class test_chunker {
 
 			Token tok2 = new Token (corpus_chunked.get(start+i));
 			String ctagc = tok2.getCtag();
-			freq2++;
+			freq++;
 			if (ctagt.equals(ctagc)){
 				succ++;
 			}
@@ -357,11 +355,10 @@ public class test_chunker {
 		System.out.println("Dauer des Chunkings: "+timeChunking+" Min.");
 		System.out.println("________ENDE CHUNKING_______");
 
-		// fehlerhalft
-		double accall = succ/freq1;
-		System.out.println("Genauigkeit: "+accall*100);
-		double recall = freq1/freq2;
-		System.out.println("Vollständigkeit: "+recall*100);
+		
+		double pres = (succ/freq)*100;
+		System.out.println("Genauigkeit: "+pres);
+
 
 
 		final double timeEnd = System.currentTimeMillis();

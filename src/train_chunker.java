@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class train_chunker {
@@ -424,6 +423,7 @@ public class train_chunker {
 				String chunk = tokc1.getCtag();
 
 				int k = id3[postag.indexOf(pos3)];
+				
 				for (int j = k; j < k+18150; j++){
 					Rule rul1 = new Rule(rulesP0m1m2.get(j));
 					String rulpos1 = rul1.getPostag()[0];
@@ -431,7 +431,7 @@ public class train_chunker {
 					String rulpos3 = rul1.getPostag()[2];
 
 					String rulchunk = rul1.getChunktag();
-
+					
 					if (pos1.equals(rulpos1) && pos2.equals(rulpos2) && pos3.equals(rulpos3)){
 						frequP0M1M2[j]++;
 						if (chunk.equals(rulchunk)){
