@@ -3,14 +3,14 @@
  * 
  * Hier findet zum einen die Eingabe, das POS-Tagging, das Chunking 
  * und die Ausgabe statt.
- * Hier werden folgende Dateien und Programme benötigt und verarbeitet. 
+ * Hier werden folgende Dateien und Programme benoetigt und verarbeitet. 
  * Rule.java
  * Token.java
- * input.txt
+ * input.txt (in UTF-8)
  * regel_auswertung.txt
  * POS-Tagging (siehe Readme)
  * 
- * Die Ausgabedatei output.txt wird hier erst erzeugt
+ * Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
  */
 import java.io.BufferedReader;
 import java.io.File;
@@ -114,7 +114,7 @@ public class chunker  {
 		double grenze1 = 50.0;
 		// Auslesen der trainierten Genauigkeit und Regeln aus rules.txt
 		
-		/* die trainierten Regeln wurden in einer bestimmten Reihenfolge gespeichert und können nun auch in dieser gleichen Reihenfolge
+		/* die trainierten Regeln wurden in einer bestimmten Reihenfolge gespeichert und koennen nun auch in dieser gleichen Reihenfolge
 		 * wieder ausgelsen werden, damit zum einen die Regel selbst und deren trainierte Genauigkeit bestimmt werden kann. 
 		 */
 
@@ -169,17 +169,21 @@ public class chunker  {
 		 * 5. 0,1
 		 * 6. 0
 		 */
-		int start = 0;
-		for (int i = start; i < input.size(); i++) {	// For-Schleife zum Durchlaufen der Eingabe aus "input.txt"
-			String posM2 = "";	// Inistialisierung einer String-Variable für das POS-Tag an der Position -2
-			String posM1 = "";	// Inistialisierung einer String-Variable für das POS-Tag an der Position -1
-			String posP0 = "";	// Inistialisierung einer String-Variable für das POS-Tag an der Position 0
-			String posP1 = "";	// Inistialisierung einer String-Variable für das POS-Tag an der Position 1
-			String posP2 = "";	// Inistialisierung einer String-Variable für das POS-Tag an der Position 2
+
+		for (int i = 0; i < input.size(); i++) {	// For-Schleife zum Durchlaufen der Eingabe aus "input.txt"
+			String posM2 = "";	// Inistialisierung einer String-Variable fuer das POS-Tag an der Position -2
+			String posM1 = "";	// Inistialisierung einer String-Variable fuer das POS-Tag an der Position -1
+			String posP0 = "";	// Inistialisierung einer String-Variable fuer das POS-Tag an der Position 0
+			String posP1 = "";	// Inistialisierung einer String-Variable fuer das POS-Tag an der Position 1
+			String posP2 = "";	// Inistialisierung einer String-Variable fuer das POS-Tag an der Position 2
 			
 			/*
-			 * Bei Tokens, die sich nicht an der Position i bzw. 0 befinden, muss zunaechst kontrolliert 
-			 * werden, ob diese ueberhaupt vorhanden sind. 
+			 * Bei i < 2 muss verhindert werden, dass der Chunker versucht die Positionen -2 und -1 
+			 * zu belegen, da er sonst versuchen wuerde auf negative i�s zuzugreifen. Dadurch wird ein 
+			 * ArrayOutOfBounds - Fehler verursachet werden. 
+			 * Um bei den Positionen 1 und 2 zu verhinderen, dass hier i > input.size() wird und 
+			 * dadurch einen ArrayOutOfBounds - Fehler verursacht, wird auch hier abgefragt, ob es einen 
+			 * weiteren Eintrag nach i gibt. 
 			 */
 			// Token und POS-Tag an der Position -2
 			if (i < 2){
@@ -219,11 +223,11 @@ public class chunker  {
 				posP1 = tokP1.getTag();						// POS-Tag des Tokens an der Position 1
 			}
 			
-			String ctagF = "";	// Inistialisierung des Chunk-Tags - Strings fuer die Anwendung der Regel
+			String ctagMax = "";	// Inistialisierung des Chunk-Tags - Strings fuer die Anwendung der Regel
 								// hier soll, wenn vorhanden das Ergebnis der Regeln stehen. 
-			double accF = 0.0;	// Inistialisierung der Genauigkeit - double Variable 
+			double accMax = 0.0;	// Inistialisierung der Genauigkeit - double Variable 
 								// hier soll, die Genauigkeit der hoechstbewerteten Regel stehen
-			double grenze2 = grenze1;	// Die untere Genauigkeit der Regeln ist die gleiche Genauigkeit, wie beim Einlesen der Regeln
+			
 			
 			//Beginn des eigentlichen Algorithmus
 			//Algorithmus fuer Positionen -2,-1,0
@@ -238,18 +242,18 @@ public class chunker  {
 				 * Vergleich der POS-Tags aus den Regeln mit den POS-Tags aus der Eingabe unter der Bedingung 
 				 * dass es die Genauigkeit ueber der unteren Grenze liegt. 
 				 */
-				if (pos1.equals(posM2) && pos2.equals(posM1) && pos3.equals(posP0) && accP0M2M1.get(j) > grenze2){
+				if (pos1.equals(posM2) && pos2.equals(posM1) && pos3.equals(posP0) && accP0M2M1.get(j) > grenze1){
 					/* zusaetzliche Bedingung fuer die Genauigkeit ist, dass es keine Regel gibt, die 
-					*  eine Genauigkeit besitzt, die hoeher ist.
-					*  Sortierung der Regeln nach Genauigkeit.
+					*  eine Genauigkeit besitzt, die hoeher ist als die aktuelle.
 					*/
-					if (accP0M2M1.get(j) > accF){
-						accF = accP0M2M1.get(j);
-						ctagF = ctag;
+					if (accP0M2M1.get(j) > accMax){ // wenn aktuelle Genauigkeit hoeher als die bisher maximale Genauigkeit 
+													// ist, wird die aktuelle als neue maximale Genauigkeit gesetzt 
+						accMax = accP0M2M1.get(j);	
+						ctagMax = ctag;				// das aktuelle Chunk-Tag ist das neue Ergebnis der Regel
 					}
 				}
 			}
-			if (ctagF == "") { /* Wenn keine ausreichend gewertete Regel gefunden wurde, 
+			if (ctagMax == "") { /* Wenn keine ausreichend gewertete Regel gefunden wurde, 
 			 					* wird in weiteren Regeln nach einer passenden gesucht.
 			 					*/
 				/*
@@ -264,14 +268,14 @@ public class chunker  {
 					String pos3 = rul1.getPostag()[2];		// Auslesen des POS-Tags aus der aktuellen Regeln an der Position 1
 					String ctag = rul1.getChunktag();		// Auslesen des Chunk-Tags aus der aktuellen Regeln
 
-					if (pos1.equals(posM1) && pos2.equals(posP0) && pos3.equals(posP1) && accP0M1P1.get(j) > grenze2){
-						if (accP0M1P1.get(j) > accF){
-							accF = accP0M1P1.get(j);
-							ctagF = ctag;
+					if (pos1.equals(posM1) && pos2.equals(posP0) && pos3.equals(posP1) && accP0M1P1.get(j) > grenze1){
+						if (accP0M1P1.get(j) > accMax){
+							accMax = accP0M1P1.get(j);
+							ctagMax = ctag;
 						}
 					}
 				}
-				if (ctagF == "") {			
+				if (ctagMax == "") {			
 					//Algorithmus fuer Positionen 0,1,2
 					for (int j = 0; j < P0P1P2.size(); j++){	// For-Schleife, die alle Regeln fuer die Positionen 0,1,2 durchlaeuft
 						Rule rul1 = new Rule (P0P1P2.get(j));	// Auslesen der Regel an der Position j 
@@ -280,14 +284,14 @@ public class chunker  {
 						String pos3 = rul1.getPostag()[2];		// Auslesen des POS-Tags aus der aktuellen Regeln an der Position 2
 						String ctag = rul1.getChunktag();		// Auslesen des Chunk-Tags aus der aktuellen Regeln
 
-						if (pos1.equals(posP0) && pos2.equals(posP1) && pos3.equals(posP2) && accP0P1P2.get(j) > grenze2){
-							if (accP0P1P2.get(j) > accF){
-								accF = accP0P1P2.get(j);
-								ctagF = ctag;
+						if (pos1.equals(posP0) && pos2.equals(posP1) && pos3.equals(posP2) && accP0P1P2.get(j) > grenze1){
+							if (accP0P1P2.get(j) > accMax){
+								accMax = accP0P1P2.get(j);
+								ctagMax = ctag;
 							}
 						}
 					}
-					if (ctagF == ""){
+					if (ctagMax == ""){
 						//Algorithmus fuer Positionen -1,0
 						for (int j = 0; j < P0M1.size(); j++){		// For-Schleife, die alle Regeln fuer die Positionen -1,0 durchlaeuft
 							Rule rul1 = new Rule (P0M1.get(j));		// Auslesen der Regel an der Position j 
@@ -295,14 +299,14 @@ public class chunker  {
 							String pos2 = rul1.getPostag()[1];		// Auslesen des POS-Tags aus der aktuellen Regeln an der Position 0
 							String ctag = rul1.getChunktag();		// Auslesen des Chunk-Tags aus der aktuellen Regeln
 
-							if (pos1.equals(posM1) && pos2.equals(posP0)&& accP0M1.get(j) > grenze2){
-								if (accP0M1.get(j) > accF){
-									accF = accP0M1.get(j);
-									ctagF = ctag;
+							if (pos1.equals(posM1) && pos2.equals(posP0)&& accP0M1.get(j) > grenze1){
+								if (accP0M1.get(j) > accMax){
+									accMax = accP0M1.get(j);
+									ctagMax = ctag;
 								}
 							}
 						}
-						if (ctagF == "") {
+						if (ctagMax == "") {
 							//Algorithmus fuer Positionen 0,1
 							for (int j = 0; j < P0P1.size(); j++){		// For-Schleife, die alle Regeln fuer die Positionen 0,1 durchlaeuft
 								Rule rul1 = new Rule (P0P1.get(j));		// Auslesen der Regel an der Position j 
@@ -310,24 +314,24 @@ public class chunker  {
 								String pos2 = rul1.getPostag()[1];		// Auslesen des POS-Tags aus der aktuellen Regeln an der Position 1
 								String ctag = rul1.getChunktag();		// Auslesen des Chunk-Tags aus der aktuellen Regeln
 
-								if (pos1.equals(posP0) && pos2.equals(posP1)&& accP0P1.get(j) > grenze2){
-									if (accP0P1.get(j) > accF){
-										accF = accP0P1.get(j);
-										ctagF = ctag;
+								if (pos1.equals(posP0) && pos2.equals(posP1)&& accP0P1.get(j) > grenze1){
+									if (accP0P1.get(j) > accMax){
+										accMax = accP0P1.get(j);
+										ctagMax = ctag;
 									}
 								}
 							}
-							if (ctagF == ""){
+							if (ctagMax == ""){
 								//Algorithmus fuer Positionen -0
-								for (int j = 0; j < P0.size(); j++){	// For-Schleife, die alle Regeln fuer die Positionen 0,1 durchlaeuft
+								for (int j = 0; j < P0.size(); j++){	// For-Schleife, die alle Regeln fuer die Positionen 0 durchlaeuft
 									Rule rul1 = new Rule (P0.get(j));	// Auslesen der Regel an der Position j 
 									String posr = rul1.getPostag()[0];	// Auslesen des POS-Tags aus der aktuellen Regeln an der Position 0
 									String ctag = rul1.getChunktag();	// Auslesen des Chunk-Tags aus der aktuellen Regeln
 
-									if (posr.equals(posP0) && accP0.get(j) > grenze2){
-										if (accP0.get(j) > accF){
-											accF = accP0.get(j);
-											ctagF = ctag;
+									if (posr.equals(posP0) && accP0.get(j) > grenze1){
+										if (accP0.get(j) > accMax){
+											accMax = accP0.get(j);
+											ctagMax = ctag;
 										}
 									}
 								}
@@ -338,13 +342,13 @@ public class chunker  {
 			}
 			else {
 			}
-			if (ctagF == ""){
-				//Hinzufügen des Tokens ohne CTag
+			if (ctagMax == ""){ // Ausgabe, wenn keine Regel gefunden wurde
+				//Hinzufuegen des Tokens ohne Chunk-Tag
 				output.add(input.get(i));
 			}
 			else {
-				//Hinzufügen des Tokens mit dem neu erworbennen CTag
-				output.add(input.get(i)+"_"+ctagF);
+				//Hinzufuegen des Tokens mit dem neu erworbenen Chunk-Tag
+				output.add(input.get(i)+"_"+ctagMax);
 			}
 		}
 
@@ -365,7 +369,7 @@ public class chunker  {
 			}
 
 		}
-		// zeitliche Messung des Chunkers fur x Tokens 
+		// zeitliche Messung des Chunkers fur input.size()- Tokens 
 		final double timeEnd = System.currentTimeMillis(); 
 		final double time = ((timeEnd-timeStart)/1000);
 		System.out.println("Dauer des Chunkers fuer "+input.size()+" Tokens betraegt: "+time+" Sek.");

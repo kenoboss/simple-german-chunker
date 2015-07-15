@@ -22,7 +22,7 @@ Zudem wird für die Vorverarbeitung der Eingabe ein POS-Tagger benötigt (aktuel
 2. Download von Stanford POS-Tagger auf [http://nlp.stanford.edu/software/tagger.shtml] (http://nlp.stanford.edu/software/tagger.shtml)
 3. Entpacken der .zip-Datei von Eclipse in ein beliebiges Verzeichnis.
 4. Starten der eclipse Anwendung
-5. Erstellung eines Java-Projektes: File -> New -> Java Project -> Benennung des Projektes (z.B. simple-german-chunker) -> Finish (sonstige Einstellungen können als *default* übernommmen werden. 
+5. Erstellung eines Java-Projektes: File -> New -> Java Project -> Benennung des Projektes (z.B. simple-german-chunker) -> Finish (Auswahl der JRE auf: 1.8+ setzen, sonstige Einstellungen können als *default* übernommmen werden). .
 6. Die .java-Dateien aus diesem Repository aus src in den src-Ordner des Java-Projektes kopieren und aus dem Ordner *results* die Datei *trained_rules.txt* in den Ordner des Java-Projektes kopieren. Beispielpfad für *trained_rules*: ../../workspace/simple-german-chunker/results/trained_rules.txt (die Datei trained_rules.txt ist noch nicht verfügbar)
 7. Erstellung eines neuen Ordners im Java-Projekt (Benennung: taggers)
 8. Entpacken der .zip-Datei des Stanford POS-Taggers in ein beliebiges Verzeichnis (nicht das gleiche wie Eclipse) und Öffnen der neu erstellten Ordnerstruktur.
