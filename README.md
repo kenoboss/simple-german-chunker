@@ -26,7 +26,7 @@ Zudem wird für die Vorverarbeitung der Eingabe ein POS-Tagger benötigt (aktuel
 6. Die .java-Dateien aus diesem Repository aus src in den src-Ordner des Java-Projektes kopieren und aus dem Ordner *results* die Datei *trained_rules.txt* in den Ordner des Java-Projektes kopieren. Beispielpfad für *trained_rules*: ../../workspace/simple-german-chunker/results/trained_rules.txt (die Datei trained_rules.txt ist noch nicht verfügbar)
 7. Erstellung eines neuen Ordners im Java-Projekt (Benennung: taggers)
 8. Entpacken der .zip-Datei des Stanford POS-Taggers in ein beliebiges Verzeichnis (nicht das gleiche wie Eclipse) und Öffnen der neu erstellten Ordnerstruktur.
-9. In dem Ordner des Stanford POS-Taggers befindet sich ein weiterer Ordner *models*. Aus diesem Ordner werden folgende Dateien in den in Punkt 6 erstellten Ordner *taggers* kopiert: *german-fast.tagger* und *german-fast.tagger.props*. 
+9. In dem Ordner des Stanford POS-Taggers befindet sich ein weiterer Ordner *models*. Aus diesem Ordner werden folgende Dateien in den in Punkt 7 erstellten Ordner *taggers* kopiert: *german-fast.tagger* und *german-fast.tagger.props*. 
 10. In Eclipse müssen nun ein paar Veränderungen am Projekt vorgenommmen werden. Dafür Rechtsklick auf das erstellte Java-Projekt -> Build Path -> Configure Build Path
 11. In dem neu geöffneten Fenster auf das *libraries* Tab klicken, hier nun auf den Button *Add External Jars* klicken.
 12. Hier kann jetzt die benötigte .jar-Datei *stanford-postagger.jar* ausgewählt werden, diese befindet sich in dem Ordner des Stanford POS-Taggers. 
