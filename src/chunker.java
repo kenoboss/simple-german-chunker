@@ -16,22 +16,26 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class chunker  {
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		System.out.println("START");
-		//POS-TAGGER (Stanford POS-Tagger)
-		//Pfadangabe
-	    File text = new File ("input.txt"); 									//unbearbeitete Eingabe
-		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");	//verwendeter POS-Tagger
+		// POS-TAGGER (Stanford POS-Tagger)
+		// Pfadangabe
+	    File text = new File ("input.txt"); 									// Speicherort der unbearbeitete Eingabe
+		MaxentTagger tagger = new MaxentTagger("taggers/german-fast.tagger");	// verwendeter POS-Tagger 
+		// es besteht auch die Moeglichkeit ein anderes Tagging-Modell aus den POS-Tagger zu waehlen
 
-		List<String> unbearbeitet = new ArrayList<String>();
-		List<String> input = new ArrayList<String>();
+		List<String> unbearbeitet = new ArrayList<String>(); 	// ArrayList fuer den Text der Eingabe
 		
 		
+		
+		// Einlesen des Textes aus der Eingabe aus input.txt
 		try {
-			String line = null;
-
-			BufferedReader inut  = new BufferedReader(new InputStreamReader(new FileInputStream (text), "UTF8"));			
+			String line = null; //Zeilenweises Einlesen der Eingabe
+			BufferedReader inut  = new BufferedReader(new InputStreamReader(new FileInputStream (text), "UTF8"));	// inut = unbearbeiter Input fuer das Tagging			
 			while (( line = inut.readLine()) != null) {
 				unbearbeitet.add(line);
 			}
@@ -41,36 +45,37 @@ public class chunker  {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		String text_unbearbeitet = "";
-		for (int i = 0; i < unbearbeitet.size(); i++){
+		
+		// POS-Tagging des eingelesenen Textes
+		String text_unbearbeitet = ""; // Hilfsvariable fuer das Tagging
+		for (int i = 0; i < unbearbeitet.size(); i++){	// For-Schleife fuer die Eingabe, sodass beim Tagging ein String verarbeitet werden kann
 			text_unbearbeitet = text_unbearbeitet.concat(unbearbeitet.get(i));
 		}
-		String tagged = tagger.tagString(text_unbearbeitet);
+		String tagged = tagger.tagString(text_unbearbeitet); // hier findet das eigentliche POS-Tagging statt, Ergebnis wird in dem String "tagged"  gespeichert
 		
-		String [] split_tagged = tagged.split(" ");
+		String [] split_tagged = tagged.split(" ");	//Zerlegung des Tagging-Strings an den Leerzeichen
 		
+		List<String> input = new ArrayList<String>();	// Liste fuer den POS-getaggten Text
 		
-		for (int i = 0; i < split_tagged.length; i++) {
+		for (int i = 0; i < split_tagged.length; i++) {	// das Array "tagged" wird zur weiteren Verarbeitung im Chunker in eine Liste eingelesen
 			input.add(split_tagged[i]+"_"+i);
 		}
+		// ENDE POS-TAGGER
 
 
 		// CHUNKER
 		// Pfadangaben
-		File rules_file = new File ("results/regel_auswertung.txt"); 	// Regeln
-		File outputtext = new File ("output.txt");						// Ausgabetext mit Chunks
+		File rules_file = new File ("results/regel_auswertung.txt"); 	// Speicherort der trainierten Regeln
+		File outputtext = new File ("output.txt");						// Speicherort des Ausgabetext mit Chunks
 
 
-		List<String> rules = new ArrayList<String>();
-		List<String> output = new ArrayList<String>();
+		List<String> rules = new ArrayList<String>();	// Eingelesene Regeln werden als ArrayList gespeichert
+		List<String> output = new ArrayList<String>();	// Ausgabe des Chunkers wird zunächst als ArrayList erzeugt
 
-		//Einlesen der Regeln und des Eingabe
+		//Einlesen der Regeln
 		try {
-			String line = null;
-
-			// Einlesen der Regeln
-			BufferedReader inrf  = new BufferedReader(new InputStreamReader(new FileInputStream (rules_file), "UTF8"));			
+			String line = null; // Zeilenweises Einlesen der Regeln
+			BufferedReader inrf  = new BufferedReader(new InputStreamReader(new FileInputStream (rules_file), "UTF8"));	// inrf = input der Regel-Datei		
 			while (( line = inrf.readLine()) != null) {
 				rules.add(line);
 			}
@@ -83,62 +88,71 @@ public class chunker  {
 		}
 
 		//Auslesen der trainierten Regeln zum Chunken
-		List<String> P0 = new ArrayList <String>();
-		List<String> P0M1 = new ArrayList <String>();
-		List<String> P0P1 = new ArrayList <String>();
-		List<String> P0M2M1 = new ArrayList <String>();
-		List<String> P0M1P1 = new ArrayList <String>();
-		List<String> P0P1P2 = new ArrayList <String>();
+		List<String> P0 = new ArrayList <String>();			// Regeln fuer die Position 0
+		List<String> P0M1 = new ArrayList <String>();		// Regeln fuer die Position -1,0
+		List<String> P0P1 = new ArrayList <String>();		// Regeln fuer die Position 0,1
+		List<String> P0M2M1 = new ArrayList <String>();		// Regeln fuer die Position -2,-1,0
+		List<String> P0M1P1 = new ArrayList <String>();		// Regeln fuer die Position -1,0,1
+		List<String> P0P1P2 = new ArrayList <String>();		// Regeln fuer die Position 0,1,2
 
-		List<Double> accP0 = new ArrayList <Double>();
-		List<Double> accP0M1 = new ArrayList <Double>();
-		List<Double> accP0P1 = new ArrayList <Double>();
-		List<Double> accP0M2M1 = new ArrayList <Double>();
-		List<Double> accP0M1P1 = new ArrayList <Double>();
-		List<Double> accP0P1P2 = new ArrayList <Double>();
+		List<Double> accP0 = new ArrayList <Double>();		// Genauigkeit der Regeln fuer die Position 0
+		List<Double> accP0M1 = new ArrayList <Double>();	// Genauigkeit der Regeln fuer die Position -1,0
+		List<Double> accP0P1 = new ArrayList <Double>();	// Genauigkeit der Regeln fuer die Position 0,1
+		List<Double> accP0M2M1 = new ArrayList <Double>();	// Genauigkeit der Regeln fuer die Position -2,-1,0
+		List<Double> accP0M1P1 = new ArrayList <Double>();	// Genauigkeit der Regeln fuer die Position -1,0,1
+		List<Double> accP0P1P2 = new ArrayList <Double>();	// Genauigkeit der Regeln fuer die Position 0,1,2
 
-		//Setzen des Grenzwertes fuer die Acc der trainierten Regeln
+		//Setzen des unteren Grenzwertes fuer die Genauigkeit der trainierten Regeln
 		double grenze1 = 50.0;
-		// Auslesen der trainierten ACC und Regeln aus rules.txt
-		for (int i = 0; i < rules.size(); i++){
+		// Auslesen der trainierten Genauigkeit und Regeln aus rules.txt
+		
+		/* die trainierten Regeln wurden in einer bestimmten Reihenfolge gespeichert und können nun auch in dieser gleichen Reihenfolge
+		 * wieder ausgelsen werden, damit zum einen die Regel selbst und deren trainierte Genauigkeit bestimmt werden kann. 
+		 */
+
+		for (int i = 0; i < rules.size(); i++){		// Einlesen der Regeln 
 			Rule rul1 = new Rule (rules.get(i));
-			String accs = rul1.getArruracy();
-			double acc = Double.parseDouble(accs); 
-			//Regeln P0
-			if (i < 330 && acc > grenze1){
-				P0.add(rules.get(i));
-				accP0.add(acc);
+			String accs = rul1.getArruracy();		// Auslesen der Genauigkeit aus den einzelnen Regeln
+			double acc = Double.parseDouble(accs); 	// Speicherung der Genauigkeit als double
+			
+			// Regeln fuer die Position 0 befinden sich in "rules.txt" in den Zeilen 0-330
+			if (i < 330 && acc > grenze1) {	// Abfrage der Regeln in der Zeile i unter der Bedingung, dass die trainierte Genauigkeit der Regel den oberen Grenzwert übersteigt	
+				P0.add(rules.get(i));		// Speicherung der aktuellen Regel in der vorgesehenen ArrayList 
+				accP0.add(acc);				// Speicherung der Genauigkeit der aktuellen Regel in der vorgesehenen ArrayList
 			}
-			//Regeln P0M1
-			if (i > 330 && i <= 18480 && acc > grenze1){
-				P0M1.add(rules.get(i));
-				accP0M1.add(acc);
+			// diese Abfrage der Regeln wiederholt sich auch bei den Regeln, die eine andere Laenge und Position besitzen 
+			
+			// Regeln fuer die Position -1,0 befinden sich in "rules.txt" in den Zeilen 331-18480
+			if (i > 330 && i <= 18480 && acc > grenze1){		
+				P0M1.add(rules.get(i));						
+				accP0M1.add(acc);							
 			}
-			//Regeln P0P1
+			// Regeln fuer die Position 0,1 befinden sich in "rules.txt" in den Zeilen 18481-36630
 			if (i > 18480 && i <= 36630 && acc > grenze1){
 				P0P1.add(rules.get(i));
 				accP0P1.add(acc);
 			}
-			//Regeln P0M2M1 
+			// Regeln fuer die Position -2,-1,0 befinden sich in "rules.txt" in den Zeilen 36631-1034880
 			if (i > 36630 && i <= 1034880 && acc > grenze1){
 				P0M2M1.add(rules.get(i));
 				accP0M2M1.add(acc);
 			}
-			//Regeln P0M1P1 
+			// Regeln fuer die Position -1,0,1 befinden sich in "rules.txt" in den Zeilen 1034881-2033130
 			if (i > 1034880 && i <= 2033130 && acc > grenze1){
 				P0M1P1.add(rules.get(i));
 				accP0M1P1.add(acc);
 			}
-			//Regeln P0P1P2 
+			// Regeln fuer die Position 0,1,2 befinden sich in "rules.txt" in den Zeilen ab 2033131 bis Ende der "rules.txt"-Datei
 			if (i > 2033130 && acc > grenze1){
 				P0P1P2.add(rules.get(i));
 				accP0P1P2.add(acc);
 			}
 		}
+		
 
 		//Chunking-Algorithmus
 		/*
-		 * Regel-Reihenfolge:
+		 * Abfrage der Regeln nach folgender Reihenfolge:
 		 * (Zahlen sind die betrachteten Positionen, um das aktuelle Wort an der Position 0)
 		 * 1. -2,-1,0
 		 * 2. -1,0,1
