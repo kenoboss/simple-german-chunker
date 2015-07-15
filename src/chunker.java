@@ -29,7 +29,7 @@ public class chunker  {
 	public static void main(String[] args) {
 		
 		System.out.println("START");
-		final double timeStart = System.currentTimeMillis(); 
+		final double timeStart = System.currentTimeMillis(); // Beginn der Zeitmessung des Programms
 		// POS-TAGGER (Stanford POS-Tagger)
 		// Pfadangabe
 	    File text = new File ("input.txt"); 									// Speicherort der unbearbeitete Eingabe
