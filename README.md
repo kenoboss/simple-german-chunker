@@ -13,7 +13,7 @@ Es werden folgende Chunks produziert:
 * B-PC  - Beginn eines Präpositionalchunks
 * I-PC  - weiterer Eintrag eines Präpositionalchunks
 
-In seiner jetzigen Form funktioniert der Chunker nur mit der Hilfe eines Eclipse-Editors (aktuell verwendet: Eclipse IDE for Java Developers, Version: Luna Service Release 2 (4.4.2), Build id: 20150219-0600). Java wird benötigt.
+In seiner jetzigen Form funktioniert der Chunker nur mit der Hilfe eines Eclipse-Editors (aktuell verwendet: Eclipse IDE for Java Developers, Version: Luna Service Release 2 (4.4.2), Build id: 20150219-0600). Java wird benötigt (Java 1.8+).
 Zudem wird für die Vorverarbeitung der Eingabe ein POS-Tagger benötigt (aktuell verwendet: Stanford POS-Tagger, Version 3.5.2, Release: 20.04.2015) 
 
 ### Installation
@@ -35,7 +35,7 @@ Zudem wird für die Vorverarbeitung der Eingabe ein POS-Tagger benötigt (aktuel
 ### Benutzung
 #### Eingabe
 
-Bei der Eingabe handelt es sich um eine Textdatei *input.txt* 
+Bei der Eingabe handelt es sich um eine Textdatei *input.txt*, die in UTF-8 vorliegen muss
 Diese muss im workspace des simple-german-chunker erstellt werden. (nicht im src-Ordner) 
 Also wäre ein Beispielpfad: ../../workspace/simple-german-chunker/input.txt
 Nun kann ein beliebiger Text in diese Datei kopiert oder geschrieben werden, der gechunkt werden soll.
