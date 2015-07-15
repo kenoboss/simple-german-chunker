@@ -1,16 +1,16 @@
-/*
+/**
  * Diese File ist Inhalt des Programms "Simple-German-Chunker"
  * 
  * Hier findet zum einen die Eingabe, das POS-Tagging, das Chunking 
  * und die Ausgabe statt.
  * Hier werden folgende Dateien und Programme benoetigt und verarbeitet. 
- * Rule.java
- * Token.java
+ * @see Rule.java
+ * @see Token.java
  * input.txt (in UTF-8)
  * regel_auswertung.txt
  * POS-Tagging (siehe Readme)
  * 
- * Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
+ * @return Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
  */
 import java.io.BufferedReader;
 import java.io.File;
@@ -354,7 +354,7 @@ public class chunker  {
 		// ENDE CHUNKER
 
 		// AUSGABE
-		//gechunkter output wird in output.txt geschrieben
+		//gechunkter Text wird in "output.txt" geschrieben
 		PrintWriter printWriter = null;
 		try {
 			printWriter = new PrintWriter(outputtext);

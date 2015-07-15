@@ -18,49 +18,30 @@ public class reading_xml {
 		try {
 
 			//reading the folder 
-			File folder = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/corpora");
-			
+			File folder = new File("corpora");
 			File[] listOfFiles = folder.listFiles();
-
-			for (int i = 0; i < listOfFiles.length; i++) {
-				
+			for (int i = 0; i < listOfFiles.length; i++) {				
 				if (listOfFiles[i].isFile()) {
 
-
 					//reading the single xml file from the corpus		
-					File fXmlFile = new File("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/corpora/"+listOfFiles[i].getName());
-					
-					DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-					
-					DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-					
+					File fXmlFile = new File("corpora/"+listOfFiles[i].getName());					
+					DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();					
+					DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();					
 					Document doc = dBuilder.parse(fXmlFile);
-
 					doc.getDocumentElement().normalize();
-
 					
 					NodeList nList = doc.getElementsByTagName("t");
-
 					
-					PrintWriter writer = new PrintWriter("C:/Users/Kenobi/workspace/Chunker_POS_Tagger_Test/justTexts/"+listOfFiles[i].getName()+".txt", "UTF-8");
-					
+					PrintWriter writer = new PrintWriter("justTexts/"+listOfFiles[i].getName()+".txt", "UTF-8");					
 					System.out.println("Writining File # "+i);
 					
 					//reading the word attribute from xml file
 					for (int temp = 0; temp < nList.getLength(); temp++) {
-
 						Node nNode = nList.item(temp);
-
 						if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-							Element eElement = (Element) nNode;
-							
+							Element eElement = (Element) nNode;					
 							//writing the word into a new .txt file
 							writer.println(eElement.getAttribute("word"));
-							
-							
-
-
 						}
 					}
 					writer.close();
@@ -76,5 +57,3 @@ public class reading_xml {
 	}
 
 }
-
-// Alle Pfadangaben muessen an das eigene Verzeichnis angepasst werden.
