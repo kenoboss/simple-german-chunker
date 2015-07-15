@@ -78,7 +78,7 @@ public class chunker  {
 
 
 		List<String> rules = new ArrayList<String>();	// Eingelesene Regeln werden als ArrayList gespeichert
-		List<String> output = new ArrayList<String>();	// Ausgabe des Chunkers wird zunächst als ArrayList erzeugt
+		List<String> output = new ArrayList<String>();	// Ausgabe des Chunkers wird zunaechst als ArrayList erzeugt
 
 		//Einlesen der Regeln
 		try {
@@ -351,7 +351,9 @@ public class chunker  {
 				output.add(input.get(i)+"_"+ctagMax);
 			}
 		}
+		// ENDE CHUNKER
 
+		// AUSGABE
 		//gechunkter output wird in output.txt geschrieben
 		PrintWriter printWriter = null;
 		try {
@@ -369,6 +371,7 @@ public class chunker  {
 			}
 
 		}
+		// ENDE AUSGABE
 		// zeitliche Messung des Chunkers fur input.size()- Tokens 
 		final double timeEnd = System.currentTimeMillis(); 
 		final double time = ((timeEnd-timeStart)/1000);
