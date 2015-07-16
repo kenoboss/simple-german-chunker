@@ -1,15 +1,18 @@
 
 public class Token {
-
-	private String token;
-	private String tag;
-	private String id;
-	private String ctag;
-	private String lemma;
+	/*
+	 * Beschreibt den Aufbau eines Tokens
+	 * Beispiel: Woerter_NN_Wort_1_I-NC
+	 */
+	private String token;	/* Wort (Token)*/
+	private String tag;		/* POS-Tag des Tokens*/	
+	private String id;		/* ID des Tokens*/
+	private String ctag;	/* Chunk-Tag des Tokens*/
+	private String lemma;	/* Lemma des Tokens*/
 
 	public Token(String text) {
 	
-		String [] wort = text.split("_");
+		String [] wort = text.split("_"); //Zerlegung des Wortes (Tokens) in seine verschiedenen Teile
 		if (wort[2].matches("[0-9]*")){
 			this.token = wort[0];
 			this.tag = wort[1];
@@ -56,6 +59,7 @@ public class Token {
 	}
 
 	public String getToken() {
+		
 		return token;
 	}
 
