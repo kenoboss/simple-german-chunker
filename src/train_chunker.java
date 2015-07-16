@@ -1,4 +1,15 @@
-/*
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+/**
  * Diese File ist Inhalt des Programms "Simple-German-Chunker"
 
  * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
@@ -14,17 +25,6 @@
  * rules.txt - Dabei handelt es sich um alle erzeugten Regeln, ohne Training
  * regel_auswertung.txt - Dabei handelt es sich um die trainierten Regeln
  */
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class train_chunker {
 

@@ -1,17 +1,4 @@
-/**
- * Diese File ist Inhalt des Programms "Simple-German-Chunker"
- * 
- * Hier findet zum einen die Eingabe, das POS-Tagging, das Chunking 
- * und die Ausgabe statt.
- * Hier werden folgende Dateien und Programme benoetigt und verarbeitet. 
- * @see Rule.java
- * @see Token.java
- * input.txt (in UTF-8)
- * regel_auswertung.txt
- * POS-Tagging (siehe Readme)
- * 
- * @return Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
- */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
-
+/**
+ * Diese File ist Inhalt des Programms "Simple-German-Chunker"
+ * 
+ * Hier findet zum einen die Eingabe, das POS-Tagging, das Chunking 
+ * und die Ausgabe statt.
+ * Hier werden folgende Dateien und Programme benoetigt und verarbeitet. 
+ * Rule.java
+ * Token.java
+ * input.txt (in UTF-8)
+ * regel_auswertung.txt
+ * POS-Tagging (siehe Readme)
+ * 
+ * Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
+ */
 public class chunker  {
 
 	public static void main(String[] args) {
@@ -73,6 +73,7 @@ public class chunker  {
 
 		// CHUNKER
 		// Pfadangaben
+		
 		File rules_file = new File ("results/regel_auswertung.txt"); 	// Speicherort der trainierten Regeln
 		File outputtext = new File ("output.txt");						// Speicherort des Ausgabetext mit Chunks
 

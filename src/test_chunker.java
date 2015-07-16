@@ -1,8 +1,4 @@
-/*
- * Diese File ist Inhalt des Programms "Simple-German-Chunker"
- * Hier werden die trainierten Regeln aus train_chunker auf das 
- * letzte 1/3 des Corpus angewendet. 
- */
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +10,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Diese File ist Inhalt des Programms "Simple-German-Chunker"
+ * Hier werden die trainierten Regeln aus train_chunker auf das 
+ * letzte 1/3 des Corpus angewendet. 
+ */
 public class test_chunker {
 
 	public static void main(String[] args) {
