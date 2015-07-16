@@ -11,12 +11,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
- * Diese File ist Inhalt des Programms "Simple-German-Chunker"
- * Hier werden die trainierten Regeln aus train_chunker auf das 
- * letzte 1/3 des Corpus angewendet. 
+ * Diese Datei ist Teil des Projektes "Simple-German-Chunker"
+ * 
+ * Hier werden die trainierten Regeln aus train_chunker.java auf das 
+ * letzte 1/3 des Corpus getestet. 
  */
 public class test_chunker {
 
+	/**
+	 * Main-Methode des Tests <br>
+	 * 
+	 * Liest aus corpus_tagged.txt den Text als Eingabe aus, 
+	 * POS-taggt den eingelesenen Text, liest die Regeln ueber einer 
+	 * gewuenschten Genauigkeit ein (default: 50.0%), chunkt den 
+	 * eingelesenen Input mit den Regeln und vergleicht das Ergbenis
+	 * mit der corpus_chunked.txt-Datei und bewertet den Vergleich.<br>
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		Date date = new Date();
@@ -310,7 +322,7 @@ public class test_chunker {
 				corpus_tagged_new.add(corpus_tagged.get(i));
 			}
 			else {
-				//Hinzufügen des Tokens mit dem neu erworbennen CTag
+				//Hinzufuegen des Tokens mit dem neu erworbennen CTag
 				corpus_tagged_new.add(corpus_tagged.get(i)+"_"+ctagF);
 			}
 		}

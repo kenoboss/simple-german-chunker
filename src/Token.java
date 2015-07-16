@@ -1,4 +1,6 @@
 /**
+ * Diese Datei ist Teil des Projektes "Simple-German-Chunker"
+ * 
  * Beschreibt den Aufbau eines Tokens
  * Beispiel: Woerter_NN_Wort_1_I-NC
  */
@@ -13,13 +15,15 @@ public class Token {
 	/**
 	 * Das Wort wird hier in seine verschiedenen Bestandteile 
 	 * zerlegt: 
-	 * Token
-	 * POS-Tag des Tokens
-	 * ID des Tokens
-	 * Lemma des Tokens
-	 * Chunk-Tag des Tokens
-	 * 
-	 * @param einzelenen Wort z.B. token_tag_id_ctag oder token_tag_lemma_id_ctag
+	 *  <ul>
+	 *  <li>Token</li>
+	 *  <li>POS-Tag des Tokens</li>
+	 *  <li>ID des Tokens</li>
+	 *  <li>Lemma des Tokens</li>
+	 *  <li>Chunk-Tag des Tokens</li>
+	 *  </ul>
+
+	 * @param text einzelnes Wort z.B. token_tag_id_ctag oder token_tag_lemma_id_ctag
 	 */
 	public Token(String text) {
 	
@@ -48,27 +52,6 @@ public class Token {
 			}
 		}
 	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public void setLemma (String lemma){
-		this.lemma = lemma;
-	}
-
-	public void setCtag(String ctag) {
-		this.ctag = ctag;
-	}
-
 	/**
 	 * Gibt das Token selbst zurueck
 	 * @return token

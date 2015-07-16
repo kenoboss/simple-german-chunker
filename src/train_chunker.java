@@ -15,19 +15,38 @@ import java.util.List;
  * Hier werden die verschiedenen Regeln für den Chunker erzeugt und 
  * mit Hilfe des Korpus werden diese Regeln trainiert.
  * Hier werden folgende Dateien benoetigt:
- * Rule.java
- * Token.java
- * tagPos.txt
- * chunked_corpus.txt
- * tagged_corpus.txt
+ * <ul>
+ * <li>Rule.java</li>
+ * <li>Token.java</li>
+ * <li>tagPos.txt</li>
+ * <li>chunked_corpus.txt</li>
+ * <li>tagged_corpus.txt</li>
+ * </ul>
  * 
- * Folgende Dateien werden hier erzeugt: 
- * rules.txt - Dabei handelt es sich um alle erzeugten Regeln, ohne Training
- * regel_auswertung.txt - Dabei handelt es sich um die trainierten Regeln
+ * Folgende Dateien werden hier erzeugt:
+ * <ul>
+ * <li>rules.txt - Dabei handelt es sich um alle erzeugten Regeln, ohne Training</li>
+ * <li>regel_auswertung.txt - Dabei handelt es sich um die trainierten Regeln</li>
+ * </ul>
  */
 
 public class train_chunker {
 
+	/**
+	 * Main-Methode des für das Training verwendeten Chunkers.
+	 * <br>
+	 * Erstellt die Regeln fuer den Chunker, wendet sie auf tagged_corpus.txt 
+	 * an und trainiert sie durch Vergleich mit chunked_corpus.txt.
+	 * <br>
+	 * Die Bewertung der Regeln sieht wie folgt aus:
+	 * <ul>
+	 * <li>Haeufigkeit (Freq): Haeufigkeit der Anwendung einer Regel</li>
+	 * <li>Erfolg (Succ): Haeufigkeit der Korrekten Anwendung einer Regel</li>
+	 * <li>Genauigkeit (Acc): Erfolg geteilt durch Haeufigkeit</li>
+	 * </ul>
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		Date date = new Date();		// Beginng der Zeitmessung des Programms

@@ -17,6 +17,12 @@ import java.awt.Font;
 import javax.swing.JTextPane;
 
 
+/**
+ * Bei dieser Datei handelt es sich um einen Teil des Projektes
+ * "Simple-German-Chunker".
+ * Dieser Teil wurde nicht in das Programm implementiert.
+ * Hierbei handelt es sich um eine Dummy-GUI.
+ */
 public class gui_chunker extends JFrame {
 
 	private JPanel contentPane;

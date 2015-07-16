@@ -9,6 +9,16 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.PrintWriter;
 
+
+/**
+ * Diese Datei ist Teil des Projektes "Simple-German-Chunker".
+ * Dieses Programm durchlaeft den Corpus "Tuebda-DZ 9.0" und 
+ * liest aus allen .xml - Dateien, die Tokens aus.
+ * Es dient zur Beschaffung eines geeigneten Formates des Corpus, 
+ * welches fuer das  Training und Testen des Chunkers benoetigt 
+ * wird. 
+ *
+ */
 public class reading_xml {
 
 	public static void main(String argv[]) {

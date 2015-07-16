@@ -11,21 +11,35 @@ import java.util.List;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 /**
- * Diese File ist Inhalt des Programms "Simple-German-Chunker"
+ * Diese Datei ist Teil des Projektes "Simple-German-Chunker"
  * 
  * Hier findet zum einen die Eingabe, das POS-Tagging, das Chunking 
  * und die Ausgabe statt.
  * Hier werden folgende Dateien und Programme benoetigt und verarbeitet. 
- * Rule.java
- * Token.java
- * input.txt (in UTF-8)
- * regel_auswertung.txt
- * POS-Tagging (siehe Readme)
+ * <ul> 
+ * <li>Rule.java </li>
+ * <li>Token.java</li>
+ * <li>input.txt (in UTF-8)</li>
+ * <li>regel_auswertung.txt</li>
+ * <li>POS-Tagging (siehe Readme)</li>
+ * </ul>
  * 
- * Die Ausgabedatei output.txt wird beim Programmdurchlauf erzeugt
+ * Die Ausgabedatei "output.txt" wird beim Programmdurchlauf erzeugt
  */
+
 public class chunker  {
 
+	/**
+	 * Main-Methode des Chunkers <br>
+	 * 
+	 * Liest aus einer input.txt den Text als Eingabe aus, 
+	 * POS-taggt den eingelesenen Text, liest die Regeln ueber einer 
+	 * gewuenschten Genauigkeit ein (default: 50.0%), chunkt den 
+	 * eingelesenen Text mit den Regeln und gibt das Ergebnis als
+	 * output.txt aus.<br>
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		System.out.println("START");
