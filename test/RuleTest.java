@@ -5,7 +5,7 @@ import java.util.EmptyStackException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
+// Zu viel noch ToDo!
 public class RuleTest {
 
 	@Test
@@ -37,12 +37,12 @@ public class RuleTest {
 		String [] text = {"0=ADJA=>I-NC","0=APPRART=>I-PC"};
 		Rule rul1 = new Rule(text[0]);
 		if(equals("1"==rul1.getPosition()[0])){
-			
+
 		}
 		else{
 			fail("Not yet implemented");
 		}
-		
+
 
 	}
 
