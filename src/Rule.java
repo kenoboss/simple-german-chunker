@@ -1,12 +1,12 @@
 /**
  * Diese Datei ist Teil des Projektes "Simple-German-Chunker"
- * 
+ *
  * Beschreibt den Aufbau einer Regel.
  * Beispiel: -1=POS-Tag;0=POS-Tag;1=POS-Tag=>Chunk-Tag=> Freq: 0.0 Succ: 0.0 Acc: 0.0
  */
 public class Rule {
 
-	
+
 	private String [] position = new String [5];
 	private String [] postag = new String [5];
 	private String chunktag;
@@ -20,10 +20,10 @@ public class Rule {
 	 * <li>Chunk-Tag</li>
 	 * <li>Accuracy</li>
 	 * </ul>
-	 * 
+	 *
 	 * Success und Frequency werden nicht ausgelesen, da sie fuer den
-	 * weiteren Gebrauch des Chunkers nicht benoetigt werden.
-	 * 
+	 * weiteren Gebrauch des Chunkers nicht benoetigt werden. // Umlaute gehören zum Deutschen!
+	 *
 	 * @param text einzelne Regel z.b 0=ADJA=>B-NC=> Freq: 57850.0 Succ: 12019.0 Acc: 20.776146
 	 */
 	public Rule(String text) {
@@ -41,7 +41,7 @@ public class Rule {
 			this.postag[i] = diffrule[1];
 		}
 	}
-	
+
 	/**
 	 * Gibt die Position zurueck
 	 * @return position
