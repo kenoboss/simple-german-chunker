@@ -17,7 +17,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
  * Dieser wurde im spaeteren Verlauf des Projektes direkt in den 
  * Chunker eingebunden.
  */
-public class POS_Tagging {
+public class pos_tagging {
 	public static void main(String[] args) throws IOException,
 	ClassNotFoundException {
 		

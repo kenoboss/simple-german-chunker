@@ -4,7 +4,7 @@
  * Beschreibt den Aufbau eines Tokens
  * Beispiel: Woerter_NN_Wort_1_I-NC
  */
-public class Token {
+public class token {
 
 	private String token;	/* Wort (Token)*/
 	private String tag;		/* POS-Tag des Tokens*/	
@@ -25,7 +25,7 @@ public class Token {
 
 	 * @param text einzelnes Wort z.B. token_tag_id_ctag oder token_tag_lemma_id_ctag
 	 */
-	public Token(String text) {
+	public token(String text) {
 	
 		String [] wort = text.split("_"); 	//Zerlegung des Wortes (Tokens) in seine verschiedenen Teile
 		if (wort[2].matches("[0-9]*")){		// Ueberpruefung, ob das dritte Element von wort eine ID oder ein Lemma ist

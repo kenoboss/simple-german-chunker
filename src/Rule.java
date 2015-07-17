@@ -4,7 +4,7 @@
  * Beschreibt den Aufbau einer Regel.
  * Beispiel: -1=POS-Tag;0=POS-Tag;1=POS-Tag=>Chunk-Tag=> Freq: 0.0 Succ: 0.0 Acc: 0.0
  */
-public class Rule {
+public class rule {
 
 	
 	private String [] position = new String [5];
@@ -26,7 +26,7 @@ public class Rule {
 	 * 
 	 * @param text einzelne Regel z.b 0=ADJA=>B-NC=> Freq: 57850.0 Succ: 12019.0 Acc: 20.776146
 	 */
-	public Rule(String text) {
+	public rule(String text) {
 		String [] rule = text.split("=>");
 		this.chunktag = rule[1];
 		if (rule.length == 3){

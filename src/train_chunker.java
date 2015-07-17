@@ -355,15 +355,15 @@ public class train_chunker {
 		final double timeStartRunOne = System.currentTimeMillis();	// Messung der Zeit fuer den Durchlauf der Regeln
 		for (int i = 0; i< trainsize; i++){ 					// For-Schleife fuer den Durchlauf des Trainingscorpus
 
-			Token tok1 = new Token (corpus_tagged.get(i));		// Auslesen des Tokens aus dem POS-getaggten Corpus
+			token tok1 = new token (corpus_tagged.get(i));		// Auslesen des Tokens aus dem POS-getaggten Corpus
 			String pos = tok1.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus)
 
-			Token tok2 = new Token (corpus_chunked.get(i));		// Auslesen des Tokens aus dem Chunk-getaggten Corpus
+			token tok2 = new token (corpus_chunked.get(i));		// Auslesen des Tokens aus dem Chunk-getaggten Corpus
 			String chunk = tok2.getCtag();						// Auslesen des POS-Tags des Tokens (Chunk Corpus)
 
 			int k = id1[postag.indexOf(pos)];
 			for (int j = k; j < k+6; j++){						// For-Schleife fuer den Durchlauf der Regeln fuer die Position 0
-				Rule rul1 = new Rule(rulesP0.get(j));			// Auslesen der Regel aus den Regeln fuer die Position 0 an der Stelle j 
+				rule rul1 = new rule(rulesP0.get(j));			// Auslesen der Regel aus den Regeln fuer die Position 0 an der Stelle j 
 				String rulpos = rul1.getPostag()[0];			// Auslesen des POS-Tags aus der Regel
 				String rulchunk = rul1.getChunktag();			// Auslesen des Chunk-Tags aus der Regel
 
@@ -408,18 +408,18 @@ public class train_chunker {
 			 * eine Alternative waere auch, dass man es ueber eine If-Bedinung zunaechst abfragt
 			 */
 
-			Token tokp1 = new Token (corpus_tagged.get(i-1));	// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
+			token tokp1 = new token (corpus_tagged.get(i-1));	// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
 			String pos1 = tokp1.getTag();						// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position -1
-			Token tokp2 = new Token (corpus_tagged.get(i));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
+			token tokp2 = new token (corpus_tagged.get(i));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
 			String pos2 = tokp2.getTag();						// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 0
 
 
-			Token tokc1 = new Token (corpus_chunked.get(i));
+			token tokc1 = new token (corpus_chunked.get(i));
 			String chunk = tokc1.getCtag();
 
 			int k = id2[postag.indexOf(pos2)];
 			for (int j = k; j < k+330; j++){
-				Rule rul1 = new Rule(rulesP0m1.get(j));
+				rule rul1 = new rule(rulesP0m1.get(j));
 				String rulpos1 = rul1.getPostag()[0];			// Auslesen des POS-Tags fuer die Postion -1 aus der Regel
 				String rulpos2 = rul1.getPostag()[1];			// Auslesen des POS-Tags fuer die Postion 0 aus der Regel
 
@@ -453,20 +453,20 @@ public class train_chunker {
 			 * eine Alternative waere auch, dass man es ueber eine If-Bedinung zunaechst abfragt
 			 */
 
-			Token tokp1 = new Token (corpus_tagged.get(i-2));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -2
+			token tokp1 = new token (corpus_tagged.get(i-2));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -2
 			String pos1 = tokp1.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position -2
-			Token tokp2 = new Token (corpus_tagged.get(i-1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
+			token tokp2 = new token (corpus_tagged.get(i-1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
 			String pos2 = tokp2.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position -1
-			Token tokp3 = new Token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
+			token tokp3 = new token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
 			String pos3 = tokp3.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 0
 
 
-			Token tokc1 = new Token (corpus_chunked.get(i));
+			token tokc1 = new token (corpus_chunked.get(i));
 			String chunk = tokc1.getCtag();
 
 			int k = id3[postag.indexOf(pos3)];
 			for (int j = k; j < k+18150; j++){
-				Rule rul1 = new Rule(rulesP0m1m2.get(j));
+				rule rul1 = new rule(rulesP0m1m2.get(j));
 				String rulpos1 = rul1.getPostag()[0];				// Auslesen des POS-Tags fuer die Postion -2 aus der Regel
 				String rulpos2 = rul1.getPostag()[1];				// Auslesen des POS-Tags fuer die Postion -1 aus der Regel
 				String rulpos3 = rul1.getPostag()[2];				// Auslesen des POS-Tags fuer die Postion 0 aus der Regel
@@ -495,18 +495,18 @@ public class train_chunker {
 		final double timeStartRunFour = System.currentTimeMillis();
 		for (int i = 0; i< trainsize; i++){ 	
 
-			Token tokp1 = new Token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
+			token tokp1 = new token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
 			String pos1 = tokp1.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 0
-			Token tokp2 = new Token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
+			token tokp2 = new token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
 			String pos2 = tokp2.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 1
 
 
-			Token tokc1 = new Token (corpus_chunked.get(i));
+			token tokc1 = new token (corpus_chunked.get(i));
 			String chunk = tokc1.getCtag();
 
 			int k = id2[postag.indexOf(pos1)];
 			for (int j = k; j < k+330; j++){
-				Rule rul1 = new Rule(rulesP0p1.get(j));
+				rule rul1 = new rule(rulesP0p1.get(j));
 				String rulpos1 = rul1.getPostag()[0];				// Auslesen des POS-Tags fuer die Postion 0 aus der Regel
 				String rulpos2 = rul1.getPostag()[1];				// Auslesen des POS-Tags fuer die Postion 1 aus der Regel
 
@@ -536,20 +536,20 @@ public class train_chunker {
 			 * eine Alternative waere auch, dass man es ueber eine If-Bedinung zunaechst abfragt
 			 */
 
-			Token tokp1 = new Token (corpus_tagged.get(i-1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
+			token tokp1 = new token (corpus_tagged.get(i-1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position -1
 			String pos1 = tokp1.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position -1
-			Token tokp2 = new Token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
+			token tokp2 = new token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
 			String pos2 = tokp2.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 0
-			Token tokp3 = new Token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
+			token tokp3 = new token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
 			String pos3 = tokp3.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 1
 
 
-			Token tokc1 = new Token (corpus_chunked.get(i));
+			token tokc1 = new token (corpus_chunked.get(i));
 			String chunk = tokc1.getCtag();
 
 			int k = id3[postag.indexOf(pos2)];
 			for (int j = k; j < k+18150; j++){
-				Rule rul1 = new Rule(rulesP0p1m1.get(j));
+				rule rul1 = new rule(rulesP0p1m1.get(j));
 				String rulpos1 = rul1.getPostag()[0];				// Auslesen des POS-Tags fuer die Postion -1 aus der Regel
 				String rulpos2 = rul1.getPostag()[1];				// Auslesen des POS-Tags fuer die Postion 0 aus der Regel
 				String rulpos3 = rul1.getPostag()[2];				// Auslesen des POS-Tags fuer die Postion 1 aus der Regel
@@ -574,20 +574,20 @@ public class train_chunker {
 		final double timeStartRunSix = System.currentTimeMillis();
 		for (int i = 0; i< trainsize; i++){ 	
 
-			Token tokp1 = new Token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
+			token tokp1 = new token (corpus_tagged.get(i));			// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 0
 			String pos1 = tokp1.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 0
-			Token tokp2 = new Token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
+			token tokp2 = new token (corpus_tagged.get(i+1));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 1
 			String pos2 = tokp2.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 1
-			Token tokp3 = new Token (corpus_tagged.get(i+2));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 2
+			token tokp3 = new token (corpus_tagged.get(i+2));		// Auslesen des Tokens aus dem POS-getaggten Corpus fuer die Position 2
 			String pos3 = tokp3.getTag();							// Auslesen des POS-Tags des Tokens (POS Corpus) fuer die Position 2
 
 
-			Token tokc1 = new Token (corpus_chunked.get(i));
+			token tokc1 = new token (corpus_chunked.get(i));
 			String chunk = tokc1.getCtag();
 
 			int k = id3[postag.indexOf(pos1)];
 			for (int j = k; j < k+18150; j++){
-				Rule rul1 = new Rule(rulesP0p1p2.get(j));
+				rule rul1 = new rule(rulesP0p1p2.get(j));
 				String rulpos1 = rul1.getPostag()[0];				// Auslesen des POS-Tags fuer die Postion 0 aus der Regel
 				String rulpos2 = rul1.getPostag()[1];				// Auslesen des POS-Tags fuer die Postion 1 aus der Regel
 				String rulpos3 = rul1.getPostag()[2];				// Auslesen des POS-Tags fuer die Postion 2 aus der Regel

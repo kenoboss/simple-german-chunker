@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,7 +106,7 @@ public class test_chunker {
 		double grenze1 = 80.0;
 		// Auslesen der trainierten ACC und Regeln aus rules.txt
 		for (int i = 0; i < rules.size(); i++){
-			Rule rul1 = new Rule (rules.get(i));
+			rule rul1 = new rule (rules.get(i));
 			String accs = rul1.getArruracy();
 			double acc = Double.parseDouble(accs); 
 			//Regeln P0
@@ -195,11 +193,11 @@ public class test_chunker {
 		final double timeChunkingStart = System.currentTimeMillis(); 
 		for (int i = start; i < corpus_tagged.size(); i++) {
 			//Erstellung der POS-Tags für die aktuelle Position im Korpus
-			Token tokM2 = new Token (corpus_tagged.get(i-2));
+			token tokM2 = new token (corpus_tagged.get(i-2));
 			String posM2 = tokM2.getTag();
-			Token tokM1 = new Token (corpus_tagged.get(i-1));
+			token tokM1 = new token (corpus_tagged.get(i-1));
 			String posM1 = tokM1.getTag();
-			Token tokP0 = new Token (corpus_tagged.get(i));
+			token tokP0 = new token (corpus_tagged.get(i));
 			String posP0 = tokP0.getTag();
 			String posP1 = "";
 			String posP2 = "";
@@ -207,13 +205,13 @@ public class test_chunker {
 			if (i >= corpus_tagged.size()-1) {
 			}
 			else {
-				Token tokP1 = new Token (corpus_tagged.get(i+1));
+				token tokP1 = new token (corpus_tagged.get(i+1));
 				posP1 = tokP1.getTag();
 			}
 			if (i >= corpus_tagged.size()-2) {
 			}
 			else {
-				Token tokP2 = new Token (corpus_tagged.get(i+2));
+				token tokP2 = new token (corpus_tagged.get(i+2));
 				posP2 = tokP2.getTag();
 			}
 			String ctagF = "";
@@ -222,7 +220,7 @@ public class test_chunker {
 			//Beginn des eigentlichen Algorithmuses
 			//Algorithmus fuer Positionen -2,-1,0
 			for (int j = 0; j < P0M2M1.size(); j++){
-				Rule rul1 = new Rule (P0M2M1.get(j));
+				rule rul1 = new rule (P0M2M1.get(j));
 				String pos1 = rul1.getPostag()[0];
 				String pos2 = rul1.getPostag()[1];
 				String pos3 = rul1.getPostag()[2];
@@ -238,7 +236,7 @@ public class test_chunker {
 			if (ctagF == "") {
 				//Algorithmus fuer Positionen -1,0,1
 				for (int j = 0; j < P0M1P1.size(); j++){
-					Rule rul1 = new Rule (P0M1P1.get(j));
+					rule rul1 = new rule (P0M1P1.get(j));
 					String pos1 = rul1.getPostag()[0];
 					String pos2 = rul1.getPostag()[1];
 					String pos3 = rul1.getPostag()[2];
@@ -254,7 +252,7 @@ public class test_chunker {
 				if (ctagF == "") {			
 					//Algorithmus fuer Positionen 0,1,2
 					for (int j = 0; j < P0P1P2.size(); j++){
-						Rule rul1 = new Rule (P0P1P2.get(j));
+						rule rul1 = new rule (P0P1P2.get(j));
 						String pos1 = rul1.getPostag()[0];
 						String pos2 = rul1.getPostag()[1];
 						String pos3 = rul1.getPostag()[2];
@@ -270,7 +268,7 @@ public class test_chunker {
 					if (ctagF == ""){
 						//Algorithmus fuer Positionen -1,0
 						for (int j = 0; j < P0M1.size(); j++){
-							Rule rul1 = new Rule (P0M1.get(j));
+							rule rul1 = new rule (P0M1.get(j));
 							String pos1 = rul1.getPostag()[0];
 							String pos2 = rul1.getPostag()[1];
 							String ctag = rul1.getChunktag();
@@ -285,7 +283,7 @@ public class test_chunker {
 						if (ctagF == "") {
 							//Algorithmus fuer Positionen 0,1
 							for (int j = 0; j < P0P1.size(); j++){
-								Rule rul1 = new Rule (P0P1.get(j));
+								rule rul1 = new rule (P0P1.get(j));
 								String pos1 = rul1.getPostag()[0];
 								String pos2 = rul1.getPostag()[1];
 								String ctag = rul1.getChunktag();
@@ -300,7 +298,7 @@ public class test_chunker {
 							if (ctagF == ""){
 								//Algorithmus fuer Positionen -0
 								for (int j = 0; j < P0.size(); j++){
-									Rule rul1 = new Rule (P0.get(j));
+									rule rul1 = new rule (P0.get(j));
 									String posr = rul1.getPostag()[0];
 									String ctag = rul1.getChunktag();
 
@@ -351,10 +349,10 @@ public class test_chunker {
 		double freq = 0;
 
 		for (int i = 0; i < corpus_tagged_new.size(); i++){
-			Token tok1 = new Token (corpus_tagged_new.get(i));
+			token tok1 = new token (corpus_tagged_new.get(i));
 			String ctagt = tok1.getCtag();
 
-			Token tok2 = new Token (corpus_chunked.get(start+i));
+			token tok2 = new token (corpus_chunked.get(start+i));
 			String ctagc = tok2.getCtag();
 			freq++;
 			if (ctagt.equals(ctagc)){
