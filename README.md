@@ -3,7 +3,7 @@
 
 Dies ist ein Projekt im Rahmen des Projektseminares der Studierenden der Universität Trier des Faches Computerlinguistik.
 
-Bei dem Programm handelt es sich um einen Chunker (eine Form des Parsings), der für die deutsche Sprache trainiert ist, mithilfe des Korpus Tuebda-DZ 9.0. 
+Bei dem Programm handelt es sich um einen Chunker (eine Form des Parsers), der für die deutsche Sprache trainiert ist mithilfe des Korpus TüBa-D/Z 9.0.
 
 Es werden folgende Chunks produziert: 
 * B-NC  - Beginn eines Nominalchunks
@@ -36,19 +36,19 @@ Zudem wird für die Vorverarbeitung der Eingabe ein POS-Tagger benötigt (aktuel
 #### Eingabe
 
 Bei der Eingabe handelt es sich um eine Textdatei *input.txt*, die in UTF-8 vorliegen muss
-Diese muss im workspace des simple-german-chunker erstellt werden. (nicht im src-Ordner) 
-Also wäre ein Beispielpfad: ../../workspace/simple-german-chunker/input.txt
+Diese muss im workspace des simple-german-chunker erstellt werden. (nicht im src-Ordner)
+Also wäre ein Beispielpfad: `../../workspace/simple-german-chunker/input.txt`
 Nun kann ein beliebiger Text in diese Datei kopiert oder geschrieben werden, der gechunkt werden soll.
 
-Eine mögliche Eingabe wäre: Das ist ein kleiner Satz. 
+Eine mögliche Eingabe wäre: `Das ist ein kleiner Satz.`
 
-Nun zurück in Eclipse: Hier kann nun mit Strg + F11 oder durch das klicken des Run-Buttons das Programm gestartet werden.
+Nun zurück in Eclipse: Hier kann nun mit `Strg + F11` oder durch das klicken des Run-Buttons das Programm gestartet werden.
 
 #### Ausgabe
 
-Bei der Ausgabe handelt es sich wieder um eine Text-Datei *output.txt*, die sich in dem gleichen Verzeichnis, wie die *input.txt* befindet. 
+Bei der Ausgabe handelt es sich wieder um eine Text-Datei *output.txt*, die sich in dem gleichen Verzeichnis, wie die *input.txt* befindet.
 
-Folgende Ausgabe entsteht bei der Eingabe von: Das ist ein kleiner Satz. 
+Folgende Ausgabe entsteht bei der Eingabe von: `Das ist ein kleiner Satz.`
 
 * Das_PDS_0_B-NC
 * ist_VAFIN_1_B-VC
