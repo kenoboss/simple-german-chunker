@@ -88,7 +88,8 @@ public class chunker  {
 		// CHUNKER
 		// Pfadangaben
 		
-		File rules_file = new File ("results/regel_auswertung.txt"); 	// Speicherort der trainierten Regeln
+		File rules_file = new File ("results/rules_tested.txt"); 
+		//File rules_file = new File ("results/regel_auswertung.txt"); 	// Speicherort der trainierten Regeln
 		File outputtext = new File ("output.txt");						// Speicherort des Ausgabetext mit Chunks
 
 
